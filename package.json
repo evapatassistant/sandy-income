@@ -1,15 +1,16 @@
 {
-  "name": "sandy-bot",
-  "version": "1.0.0",
-  "description": "Sandy's Telegram Bot",
-  "main": "src/bot.js",
+  "name": "sandy-income",
+  "version": "3.0.0",
+  "description": "Sandy's API + Telegram Bot",
+  "main": "src/index.js",
   "scripts": {
-    "start": "node src/bot.js"
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
   },
   "engines": {
     "node": ">=18.0.0"
-  },
-  "dependencies": {
-    "express": "^4.18.2"
   }
 }
