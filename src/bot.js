@@ -29,10 +29,9 @@ const tools = {
     return `🆔 *UUID Generator*\n\n${result}`;
   },
   
-  hash: (params.text, params.algo) => {
-    const algo = params.algo || 'sha256';
-    const hash = crypto.createHash(algo).update(params.text).digest('hex');
-    return `🔒 *Hash (${algo})*\n\nInput: \`${params.text}\`\n\nHash: \`${hash}\``;
+  hash: (text, algo = 'sha256') => {
+    const hash = crypto.createHash(algo).update(text).digest('hex');
+    return `🔒 *Hash (${algo})*\n\nInput: \`${text}\`\n\nHash: \`${hash}\``;
   },
   
   reverse: (text) => {
