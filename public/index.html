@@ -3,8 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sandy's API - Free Utility APIs</title>
-    <meta name="description" content="Free utility APIs for developers. Reverse text, timestamp conversion, and more.">
+    <title>Sandy's API | Free Developer Tools</title>
+    <meta name="description" content="Free developer API tools: Password Generator, UUID, QR Codes, Hash, Timestamp Converter, and more.">
+    <meta name="keywords" content="API, developer tools, free tools, password generator, uuid generator, qr code, hash, timestamp">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Sandy's API | Free Developer Tools">
+    <meta property="og:description" content="15+ free utility APIs for developers. No registration required.">
+    <meta property="og:type" content="website">
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐚</text></svg>">
+    
     <style>
         * {
             margin: 0;
@@ -14,325 +23,675 @@
         
         :root {
             --primary: #6366f1;
-            --primary-dark: #4f46e5;
+            --primary-hover: #4f46e5;
             --secondary: #10b981;
+            --accent: #f59e0b;
             --dark: #0f172a;
+            --dark-secondary: #1e293b;
+            --dark-tertiary: #334155;
             --light: #f8fafc;
-            --gray: #64748b;
+            --gray: #94a3b8;
+            --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--dark);
             color: var(--light);
-            min-height: 100vh;
             line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        /* Animated Background */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 40%);
         }
         
         .container {
-            max-width: 900px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 1;
         }
         
+        /* Header */
         header {
-            text-align: center;
-            padding: 3rem 0;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
         
         .logo {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
         
-        h1 {
+        .logo-icon {
             font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .logo-text {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         
-        .tagline {
-            color: var(--gray);
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
         }
         
-        .goal {
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid var(--primary);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
+        .nav-links a {
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--light);
+        }
+        
+        .github-btn {
+            background: var(--dark-secondary);
+            border: 1px solid var(--dark-tertiary);
+            color: var(--light);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .github-btn:hover {
+            background: var(--dark-tertiary);
+            transform: translateY(-2px);
+        }
+        
+        /* Hero */
+        .hero {
+            padding: 4rem 0;
             text-align: center;
         }
         
-        .goal-icon {
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .hero h1 span {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--secondary);
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+        
+        /* Mission */
+        .mission {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        
+        .mission-icon {
             font-size: 2rem;
             margin-bottom: 0.5rem;
         }
         
-        .goal-text {
+        .mission-text {
             color: var(--primary);
             font-weight: 600;
         }
         
+        /* Ad Space */
         .ad-space {
-            background: #1e293b;
-            border: 2px dashed #334155;
+            background: var(--dark-secondary);
+            border: 2px dashed var(--dark-tertiary);
             border-radius: 12px;
-            padding: 2rem;
+            padding: 1.5rem;
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
             color: var(--gray);
         }
         
-        h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--light);
+        /* Tools Grid */
+        .tools-section {
+            padding: 2rem 0 4rem;
         }
         
-        .endpoints {
-            display: grid;
-            gap: 1rem;
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
             margin-bottom: 2rem;
-        }
-        
-        .endpoint {
-            background: rgba(30, 41, 59, 0.8);
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 1.25rem;
-            transition: all 0.3s ease;
-        }
-        
-        .endpoint:hover {
-            border-color: var(--primary);
-            transform: translateY(-2px);
-        }
-        
-        .endpoint-header {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 0.5rem;
+            gap: 0.75rem;
         }
         
-        .method {
-            background: var(--secondary);
-            color: var(--dark);
-            padding: 0.25rem 0.75rem;
-            border-radius: 6px;
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.25rem;
+        }
+        
+        .tool-card {
+            background: var(--dark-secondary);
+            border: 1px solid var(--dark-tertiary);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .tool-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .tool-icon {
+            font-size: 1.5rem;
+        }
+        
+        .tool-name {
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 1.1rem;
         }
         
-        .method.post { background: #f59e0b; }
-        .method.put { background: #3b82f6; }
-        .method.delete { background: #ef4444; }
-        
-        .path {
-            font-family: 'Monaco', 'Consolas', monospace;
-            color: var(--primary);
-            font-weight: 600;
-        }
-        
-        .description {
+        .tool-desc {
             color: var(--gray);
             font-size: 0.9rem;
+            margin-bottom: 1rem;
         }
         
-        .try-it {
-            margin-top: 1rem;
+        .tool-example {
+            background: var(--dark);
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            white-space: nowrap;
+            color: var(--secondary);
+        }
+        
+        .tool-card.new {
+            border-color: var(--secondary);
+            position: relative;
+        }
+        
+        .tool-card.new::before {
+            content: 'NEU';
+            position: absolute;
+            top: -8px;
+            right: 12px;
+            background: var(--secondary);
+            color: var(--dark);
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+        
+        /* API Example */
+        .api-example {
+            background: var(--dark-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .api-example h3 {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .code-block {
+            background: var(--dark);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+        
+        .code-block .method {
+            color: var(--secondary);
+        }
+        
+        .code-block .url {
+            color: var(--primary);
+        }
+        
+        .code-block .comment {
+            color: var(--gray);
+        }
+        
+        .try-btns {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
         }
         
         .try-btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1rem;
             border-radius: 6px;
             cursor: pointer;
+            font-weight: 600;
             font-size: 0.85rem;
-            transition: background 0.3s;
+            transition: all 0.3s;
         }
         
         .try-btn:hover {
-            background: var(--primary-dark);
+            background: var(--primary-hover);
+            transform: translateY(-2px);
         }
         
-        .response {
-            margin-top: 0.75rem;
-            background: #0f172a;
-            padding: 0.75rem;
-            border-radius: 6px;
-            font-family: monospace;
-            font-size: 0.8rem;
+        /* Response Area */
+        .response-area {
+            background: var(--dark);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
             display: none;
-            overflow-x: auto;
+            max-height: 200px;
+            overflow: auto;
         }
         
-        .response.show {
+        .response-area.show {
             display: block;
         }
         
-        .cta {
+        /* CTA */
+        .cta-section {
             text-align: center;
             padding: 3rem 0;
         }
         
         .cta-btn {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: var(--gradient);
             color: white;
             border: none;
-            padding: 1rem 2rem;
+            padding: 1rem 2.5rem;
             border-radius: 12px;
             font-size: 1.1rem;
             font-weight: 700;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
         }
         
         .cta-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
         }
         
+        /* Footer */
         footer {
             text-align: center;
             padding: 2rem 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
             color: var(--gray);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+        }
+        
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
         }
         
         .heart {
             color: #ef4444;
         }
         
-        @media (max-width: 600px) {
-            h1 { font-size: 1.8rem; }
-            .container { padding: 1rem; }
+        /* Mobile */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero {
+                padding: 2rem 0;
+            }
+            
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="bg-pattern"></div>
+    
     <div class="container">
         <header>
-            <div class="logo">🐚</div>
-            <h1>Sandy's API</h1>
-            <p class="tagline">Free utility APIs for developers</p>
-            <div class="goal">
-                <div class="goal-icon">💜</div>
-                <p class="goal-text">Built with love for Mia's future ☁️</p>
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🐚</span>
+                    <span class="logo-text">Sandy's API</span>
+                </div>
+                <nav class="nav-links">
+                    <a href="#tools">Tools</a>
+                    <a href="https://github.com/evapatassistant/sandy-income" target="_blank">
+                        <span class="github-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            GitHub
+                        </span>
+                    </a>
+                </nav>
             </div>
         </header>
         
-        <!-- Ad Space -->
-        <div class="ad-space">
-            📢 Werbung hier platzieren
+        <section class="hero">
+            <h1>Free Developer Tools<br><span>API for Everyone</span></h1>
+            <p>15+ powerful, free APIs. No registration required. Built with 💜 for developers everywhere.</p>
+            
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-value">15+</div>
+                    <div class="stat-label">Tools</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">Free</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">0€</div>
+                    <div class="stat-label">Cost</div>
+                </div>
+            </div>
+            
+            <a href="#tools" class="cta-btn">Explore Tools →</a>
+        </section>
+        
+        <div class="mission">
+            <div class="mission-icon">💜</div>
+            <p class="mission-text">Built with love for Mia's future ☁️</p>
         </div>
         
-        <section>
-            <h2>📡 Available Endpoints</h2>
-            <div class="endpoints">
-                <div class="endpoint">
-                    <div class="endpoint-header">
-                        <span class="method">GET</span>
-                        <span class="path">/api/ping</span>
+        <!-- Ad Space -->
+        <div class="ad-space">
+            📢 Your Ad Here - Contact for sponsorship
+        </div>
+        
+        <section id="tools" class="tools-section">
+            <h2 class="section-title">🛠️ Available Tools</h2>
+            
+            <div class="tools-grid">
+                <!-- Password Generator -->
+                <div class="tool-card new">
+                    <div class="tool-header">
+                        <span class="tool-icon">🔐</span>
+                        <span class="tool-name">Password Generator</span>
                     </div>
-                    <p class="description">Health check endpoint - returns pong</p>
-                    <div class="try-it">
-                        <button class="try-btn" onclick="tryEndpoint('/api/ping', this)">Test</button>
-                        <div class="response"></div>
-                    </div>
+                    <p class="tool-desc">Generate secure random passwords with custom options</p>
+                    <div class="tool-example">/api/password?length=16&symbols=true</div>
                 </div>
                 
-                <div class="endpoint">
-                    <div class="endpoint-header">
-                        <span class="method">GET</span>
-                        <span class="path">/api/time</span>
+                <!-- UUID Generator -->
+                <div class="tool-card new">
+                    <div class="tool-header">
+                        <span class="tool-icon">🆔</span>
+                        <span class="tool-name">UUID Generator</span>
                     </div>
-                    <p class="description">Get current Unix timestamp, ISO format, and UTC time</p>
-                    <div class="try-it">
-                        <button class="try-btn" onclick="tryEndpoint('/api/time', this)">Test</button>
-                        <div class="response"></div>
-                    </div>
+                    <p class="tool-desc">Generate universally unique identifiers (UUID v4)</p>
+                    <div class="tool-example">/api/uuid?count=5</div>
                 </div>
                 
-                <div class="endpoint">
-                    <div class="endpoint-header">
-                        <span class="method">GET</span>
-                        <span class="path">/api/reverse/:text</span>
+                <!-- QR Code -->
+                <div class="tool-card new">
+                    <div class="tool-header">
+                        <span class="tool-icon">📱</span>
+                        <span class="tool-name">QR Code</span>
                     </div>
-                    <p class="description">Reverse any text string</p>
-                    <div class="try-it">
-                        <button class="try-btn" onclick="tryEndpoint('/api/reverse/hello', this)">Test</button>
-                        <div class="response"></div>
-                    </div>
+                    <p class="tool-desc">Generate QR codes for any text or URL</p>
+                    <div class="tool-example">/api/qrcode?text=hello&size=300</div>
                 </div>
                 
-                <div class="endpoint">
-                    <div class="endpoint-header">
-                        <span class="method">GET</span>
-                        <span class="path">/api/uppercase/:text</span>
+                <!-- Hash Generator -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">🔒</span>
+                        <span class="tool-name">Hash Generator</span>
                     </div>
-                    <p class="description">Convert text to uppercase</p>
-                    <div class="try-it">
-                        <button class="try-btn" onclick="tryEndpoint('/api/uppercase/hello', this)">Test</button>
-                        <div class="response"></div>
-                    </div>
+                    <p class="tool-desc">Generate SHA256, MD5, and other hashes</p>
+                    <div class="tool-example">/api/hash/yourtext?algo=sha256</div>
                 </div>
                 
-                <div class="endpoint">
-                    <div class="endpoint-header">
-                        <span class="method">GET</span>
-                        <span class="path">/api/lowercase/:text</span>
+                <!-- Timestamp -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">⏰</span>
+                        <span class="tool-name">Timestamp Converter</span>
                     </div>
-                    <p class="description">Convert text to lowercase</p>
-                    <div class="try-it">
-                        <button class="try-btn" onclick="tryEndpoint('/api/lowercase/HELLO', this)">Test</button>
-                        <div class="response"></div>
+                    <p class="tool-desc">Convert between timestamps, dates, and formats</p>
+                    <div class="tool-example">/api/timestamp?time=1700000000</div>
+                </div>
+                
+                <!-- Color Converter -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">🎨</span>
+                        <span class="tool-name">Color Converter</span>
                     </div>
+                    <p class="tool-desc">Convert between HEX, RGB, and HSL</p>
+                    <div class="tool-example">/api/color/6366f1</div>
+                </div>
+                
+                <!-- Base64 -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">📝</span>
+                        <span class="tool-name">Base64 Encoder</span>
+                    </div>
+                    <p class="tool-desc">Encode and decode Base64 strings</p>
+                    <div class="tool-example">POST /api/base64</div>
+                </div>
+                
+                <!-- JSON -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">{ }</span>
+                        <span class="tool-name">JSON Formatter</span>
+                    </div>
+                    <p class="tool-desc">Validate and format JSON data</p>
+                    <div class="tool-example">POST /api/json/format</div>
+                </div>
+                
+                <!-- Lorem Ipsum -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">📄</span>
+                        <span class="tool-name">Lorem Ipsum</span>
+                    </div>
+                    <p class="tool-desc">Generate placeholder text</p>
+                    <div class="tool-example">/api/lorem?paragraphs=2&words=50</div>
+                </div>
+                
+                <!-- User Agent -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">👤</span>
+                        <span class="tool-name">User Agent Parser</span>
+                    </div>
+                    <p class="tool-desc">Parse browser and OS from User-Agent</p>
+                    <div class="tool-example">/api/ua?ua=Mozilla/5.0...</div>
+                </div>
+                
+                <!-- Binary -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">💻</span>
+                        <span class="tool-name">Binary Converter</span>
+                    </div>
+                    <p class="tool-desc">Convert text to binary code</p>
+                    <div class="tool-example">/api/binary/hello</div>
+                </div>
+                
+                <!-- Morse -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">📡</span>
+                        <span class="tool-name">Morse Code</span>
+                    </div>
+                    <p class="tool-desc">Convert text to Morse code</p>
+                    <div class="tool-example">/api/morse/hello</div>
                 </div>
             </div>
         </section>
         
-        <div class="cta">
-            <a href="https://github.com/evapatassistant/sandy-income" style="text-decoration:none;color:inherit;">
-                <button class="cta-btn">⭐ Star on GitHub</button>
+        <!-- API Example -->
+        <div class="api-example">
+            <h3>🚀 Quick Start</h3>
+            <div class="code-block">
+                <span class="method">GET</span> <span class="url">https://sandy-income.onrender.com/api/password?length=20</span>
+            </div>
+            <div class="try-btns">
+                <button class="try-btn" onclick="tryApi('/api/password?length=16', 'response-1')">Try Password</button>
+                <button class="try-btn" onclick="tryApi('/api/uuid?count=1', 'response-2')">Try UUID</button>
+                <button class="try-btn" onclick="tryApi('/api/timestamp', 'response-3')">Try Timestamp</button>
+                <button class="try-btn" onclick="tryApi('/api/color/6366f1', 'response-4')">Try Color</button>
+            </div>
+            <div class="response-area" id="response-1"></div>
+            <div class="response-area" id="response-2"></div>
+            <div class="response-area" id="response-3"></div>
+            <div class="response-area" id="response-4"></div>
+        </div>
+        
+        <div class="cta-section">
+            <a href="https://github.com/evapatassistant/sandy-income" target="_blank" class="cta-btn">
+                ⭐ Star on GitHub
             </a>
         </div>
         
         <footer>
             <p>Built with <span class="heart">♥</span> by Sandy the AI</p>
-            <p>© 2026 Sandy Income Generator</p>
+            <p>© 2026 Sandy Income Generator • <a href="#">Privacy</a> • <a href="#">Terms</a></p>
         </footer>
     </div>
     
     <script>
         const BASE_URL = 'https://sandy-income.onrender.com';
         
-        async function tryEndpoint(endpoint, btn) {
-            const responseDiv = btn.nextElementSibling;
-            btn.textContent = 'Loading...';
-            btn.disabled = true;
+        async function tryApi(endpoint, responseId) {
+            const responseDiv = document.getElementById(responseId);
+            responseDiv.classList.add('show');
+            responseDiv.textContent = 'Loading...';
             
             try {
                 const res = await fetch(BASE_URL + endpoint);
                 const data = await res.json();
                 responseDiv.textContent = JSON.stringify(data, null, 2);
-                responseDiv.classList.add('show');
             } catch (err) {
                 responseDiv.textContent = 'Error: ' + err.message;
-                responseDiv.classList.add('show');
             }
-            
-            btn.textContent = 'Test';
-            btn.disabled = false;
         }
+        
+        // Add smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
     </script>
 </body>
 </html>
