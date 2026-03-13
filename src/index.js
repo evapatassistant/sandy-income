@@ -5,6 +5,7 @@ const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const BOT_TOKEN = process.env.BOT_TOKEN || '8084527991:AAEJk7DxYnQW2GNzUCBg8868OyYuzGanw9I';
 
 app.use(cors());
 app.use(express.json());
@@ -22,279 +23,127 @@ app.get('/', (req, res) => {
 // Password Generator
 app.get('/api/password', (req, res) => {
   const length = parseInt(req.query.length) || 16;
-  const useSymbols = req.query.symbols !== 'false';
-  const useNumbers = req.query.numbers !== 'false';
-  const useUppercase = req.query.uppercase !== 'false';
-  
-  let chars = 'abcdefghijklmnopqrstuvwxyz';
-  if (useUppercase) chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  if (useNumbers) chars += '0123456789';
-  if (useSymbols) chars += '!@#$%^&*()_+-=[]{}|;:,.<>?';
-  
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=';
   let password = '';
   const array = new Uint32Array(length);
   crypto.getRandomValues(array);
   for (let i = 0; i < length; i++) {
     password += chars[array[i] % chars.length];
   }
-  
-  res.json({ password, length, options: { symbols: useSymbols, numbers: useNumbers, uppercase: useUppercase } });
+  res.json({ password, length });
 });
 
 // UUID Generator
 app.get('/api/uuid', (req, res) => {
   const count = Math.min(parseInt(req.query.count) || 1, 100);
   const uuids = [];
-  for (let i = 0; i < count; i++) {
-    uuids.push(crypto.randomUUID());
-  }
+  for (let i = 0; i < count; i++) uuids.push(crypto.randomUUID());
   res.json({ uuids: count === 1 ? uuids[0] : uuids, count });
-});
-
-// Base64 Encode/Decode
-app.post('/api/base64', (req, res) => {
-  const { text, action } = req.body;
-  if (!text) return res.status(400).json({ error: 'Missing text parameter' });
-  
-  try {
-    if (action === 'decode') {
-      res.json({ original: text, decoded: Buffer.from(text, 'base64').toString('utf8') });
-    } else {
-      res.json({ original: text, encoded: Buffer.from(text).toString('base64') });
-    }
-  } catch (e) {
-    res.status(400).json({ error: 'Invalid input' });
-  }
 });
 
 // Hash Generator
 app.get('/api/hash/:text', (req, res) => {
-  const text = req.params.text;
   const algo = req.query.algo || 'sha256';
-  
-  const hash = crypto.createHash(algo).update(text).digest('hex');
-  res.json({ text, algo, hash });
+  const hash = crypto.createHash(algo).update(req.params.text).digest('hex');
+  res.json({ text: req.params.text, algo, hash });
 });
 
-// JSON Validator
-app.post('/api/json/validate', (req, res) => {
-  const data = req.body;
-  
-  try {
-    const stringified = JSON.stringify(data, null, 2);
-    res.json({ valid: true, data, size: stringified.length });
-  } catch (e) {
-    res.json({ valid: false, error: e.message });
-  }
-});
-
-// JSON Formatter
-app.post('/api/json/format', (req, res) => {
-  const data = req.body;
-  const indent = parseInt(req.query.indent) || 2;
-  
-  try {
-    res.json({ formatted: JSON.stringify(data, null, indent) });
-  } catch (e) {
-    res.status(400).json({ error: e.message });
-  }
-});
-
-// Timestamp Converter
+// Timestamp
 app.get('/api/timestamp', (req, res) => {
-  const input = req.query.time;
-  let date;
-  
-  if (input) {
-    const parsed = parseInt(input);
-    date = isNaN(parsed) ? new Date(input) : new Date(parsed);
-  } else {
-    date = new Date();
-  }
-  
-  if (isNaN(date.getTime())) {
-    return res.status(400).json({ error: 'Invalid timestamp or date' });
-  }
-  
-  res.json({
-    unix: date.getTime(),
-    unixSeconds: Math.floor(date.getTime() / 1000),
-    iso: date.toISOString(),
-    utc: date.toUTCString(),
-    local: date.toString(),
-    year: date.getFullYear(),
-    month: date.getMonth() + 1,
-    day: date.getDate(),
-    hour: date.getHours(),
-    minute: date.getMinutes(),
-    second: date.getSeconds()
-  });
+  res.json({ unix: Date.now(), iso: new Date().toISOString() });
 });
 
-// Color Converter
-app.get('/api/color/:color', (req, res) => {
-  const input = req.params.color;
-  let hex = input;
-  
-  // Handle # prefix
-  if (!hex.startsWith('#')) hex = '#' + hex;
-  
-  // Expand short form
-  if (hex.length === 4) {
-    hex = '#' + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3];
-  }
-  
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  
-  if (isNaN(r) || isNaN(g) || isNaN(b)) {
-    return res.status(400).json({ error: 'Invalid color format' });
-  }
-  
-  // RGB to HSL
-  const rNorm = r / 255, gNorm = g / 255, bNorm = b / 255;
-  const max = Math.max(rNorm, gNorm, bNorm), min = Math.min(rNorm, gNorm, bNorm);
-  let h, s, l = (max + min) / 2;
-  
-  if (max === min) {
-    h = s = 0;
-  } else {
-    const d = max - min;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    switch (max) {
-      case rNorm: h = ((gNorm - bNorm) / d + (gNorm < bNorm ? 6 : 0)) / 6; break;
-      case gNorm: h = ((bNorm - rNorm) / d + 2) / 6; break;
-      case bNorm: h = ((rNorm - gNorm) / d + 4) / 6; break;
-    }
-  }
-  
-  res.json({
-    hex: hex.toUpperCase(),
-    rgb: `rgb(${r}, ${g}, ${b})`,
-    rgbObject: { r, g, b },
-    hsl: `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`,
-    hslObject: { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) }
-  });
-});
-
-// Lorem Ipsum Generator
-app.get('/api/lorem', (req, res) => {
-  const paragraphs = Math.min(parseInt(req.query.paragraphs) || 1, 20);
-  const words = Math.min(parseInt(req.query.words) || 50, 500);
-  
-  const wordsList = ['lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit', 'sed', 'do', 'eiusmod', 'tempor', 'incididunt', 'ut', 'labore', 'et', 'dolore', 'magna', 'aliqua', 'enim', 'ad', 'minim', 'veniam', 'quis', 'nostrud', 'exercitation', 'ullamco', 'laboris', 'nisi', 'aliquip', 'ex', 'ea', 'commodo', 'consequat', 'duis', 'aute', 'irure', 'in', 'reprehenderit', 'voluptate', 'velit', 'esse', 'cillum', 'fugiat', 'nulla', 'pariatur', 'excepteur', 'sint', 'occaecat', 'cupidatat', 'non', 'proident', 'sunt', 'culpa', 'qui', 'officia', 'deserunt', 'mollit', 'anim', 'id', 'est', 'laborum'];
-  
-  const result = [];
-  for (let p = 0; p < paragraphs; p++) {
-    const paragraph = [];
-    for (let w = 0; w < words; w++) {
-      paragraph.push(wordsList[Math.floor(Math.random() * wordsList.length)]);
-    }
-    // Capitalize first letter
-    paragraph[0] = paragraph[0].charAt(0).toUpperCase() + paragraph[0].slice(1);
-    result.push(paragraph.join(' ') + '.');
-  }
-  
-  res.json({ paragraphs: result, count: { paragraphs, words } });
-});
-
-// User Agent Parser
-app.get('/api/ua', (req, res) => {
-  const ua = req.query.ua || req.headers['user-agent'] || 'Unknown';
-  
-  const browser = ua.match(/(Firefox|Chrome|Safari|Edge|Opera|MSIE|Trident)[\/]?(\d+)/);
-  const os = ua.match(/(Windows|Mac|Linux|Android|iOS|CrOS|Ubuntu|Fedora|Windows\sPhone)[\/]?[\d\.]*/);
-  const mobile = /Mobile|Android|iPhone|iPad|iPod|BlackBerry|Opera Mini|IEMobile|WPDesktop/.test(ua);
-  
-  res.json({
-    userAgent: ua,
-    browser: browser ? { name: browser[1], version: browser[2] } : null,
-    os: os ? os[0] : null,
-    isMobile: mobile,
-    isBot: /bot|crawler|spider|crawl/i.test(ua)
-  });
-});
-
-// QR Code (using external API - free)
+// QR Code
 app.get('/api/qrcode', (req, res) => {
   const text = req.query.text || 'https://sandy-income.onrender.com';
   const size = Math.min(parseInt(req.query.size) || 300, 1000);
-  
-  res.json({
-    text,
-    size,
-    qrUrl: `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text)}`,
-    api: 'qrserver.com'
-  });
+  res.json({ text, qrUrl: `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text)}` });
 });
 
-// Binary Converter
+// Binary
 app.get('/api/binary/:text', (req, res) => {
-  const text = req.params.text;
-  const binary = text.split('').map(char => 
-    char.charCodeAt(0).toString(2).padStart(8, '0')
-  ).join(' ');
-  
-  res.json({ text, binary });
+  const binary = req.params.text.split('').map(c => c.charCodeAt(0).toString(2).padStart(8, '0')).join(' ');
+  res.json({ text: req.params.text, binary });
 });
 
-// Morse Code
+// Morse
 app.get('/api/morse/:text', (req, res) => {
-  const text = req.params.text.toUpperCase();
-  const morseCode = {
-    'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
-    'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
-    'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
-    'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
-    'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---',
-    '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...',
-    '8': '---..', '9': '----.', ' ': '/'
-  };
+  const morseCode = { 'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-', 'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.', ' ': '/' };
+  const morse = req.params.text.toUpperCase().split('').map(c => morseCode[c] || c).join(' ');
+  res.json({ text: req.params.text, morse });
+});
+
+// Color
+app.get('/api/color/:color', (req, res) => {
+  let hex = req.params.color.startsWith('#') ? req.params.color : '#' + req.params.color;
+  if (hex.length === 4) hex = '#' + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3];
+  const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+  if (isNaN(r)) return res.status(400).json({ error: 'Invalid color' });
+  res.json({ hex: hex.toUpperCase(), rgb: `rgb(${r},${g},${b})`, rgbObject: { r, g, b } });
+});
+
+// Lorem Ipsum
+app.get('/api/lorem', (req, res) => {
+  const words = ['lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit'];
+  const count = Math.min(parseInt(req.query.words) || 20, 100);
+  const text = Array(count).fill(0).map(() => words[Math.floor(Math.random() * words.length)]).join(' ');
+  res.json({ text: text.charAt(0).toUpperCase() + text.slice(1) + '.', words: count });
+});
+
+// Basic endpoints
+app.get('/api/ping', (req, res) => res.json({ ping: 'pong', timestamp: Date.now() }));
+app.get('/api/info', (req, res) => res.json({ service: "Sandy's API", version: '3.0.0', endpoints: 12 }));
+app.get('/api/reverse/:text', (req, res) => res.json({ original: req.params.text, reversed: req.params.text.split('').reverse().join('') }));
+app.get('/api/uppercase/:text', (req, res) => res.json({ original: req.params.text, upper: req.params.text.toUpperCase() }));
+app.get('/api/lowercase/:text', (req, res) => res.json({ original: req.params.text, lower: req.params.text.toLowerCase() }));
+
+// ============== TELEGRAM BOT ==============
+
+const botCommands = {
+  password: (args) => `🔐 *Password Generator*\n\n\`${crypto.randomUUID().slice(0, parseInt(args[0]) || 16)}\``,
+  uuid: (args) => `🆔 *UUIDs*\n\n${Array(Math.min(parseInt(args[0]) || 1, 10)).fill(0).map((_, i) => `${i+1}. \`${crypto.randomUUID()}\``).join('\n')}`,
+  hash: (args) => args[0] ? `🔒 *Hash*\n\n\`${crypto.createHash(args[1] || 'sha256').update(args[0]).digest('hex')}\`` : 'Usage: /hash <text>',
+  reverse: (args) => args.join(' ') ? `🔄 *Reverse*\n\n${args.join(' ')} → ${args.join('').split('').reverse().join('')}` : 'Usage: /reverse <text>',
+  upper: (args) => args.join(' ') ? `⬆️ *Uppercase*\n\n\`${args.join(' ').toUpperCase()}\`` : 'Usage: /upper <text>',
+  lower: (args) => args.join(' ') ? `⬇️ *Lowercase*\n\n\`${args.join(' ').toLowerCase()}\`` : 'Usage: /lower <text>',
+  binary: (args) => args.join(' ') ? `💻 *Binary*\n\n${args.join(' ').split('').map(c => c.charCodeAt(0).toString(2).padStart(8, '0')).join(' ')}` : 'Usage: /binary <text>',
+  timestamp: () => `⏰ *Timestamp*\n\nUnix: \`${Date.now()}\``,
+  qrcode: (args) => `📱 *QR Code*\n\nhttps://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(args.join(' ') || 'hello')}`,
+  help: () => `🐚 *Sandy's Bot*\n\n/password [len] - Password\n/uuid [count] - UUIDs\n/hash <text> - Hash\n/reverse <text> - Reverse\n/upper <text> - Uppercase\n/lower <text> - Lowercase\n/binary <text> - Binary\n/timestamp - Time\n/qrcode <text> - QR Code\n/help - This help`
+};
+
+async function sendMessage(chatId, text, parseMode = 'Markdown') {
+  await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: chatId, text, parse_mode: parseMode })
+  });
+}
+
+app.post(`/webhook/${BOT_TOKEN}`, async (req, res) => {
+  const msg = req.body.message;
+  if (!msg || !msg.text) return res.send('OK');
   
-  const morse = text.split('').map(char => morseCode[char] || char).join(' ');
-  res.json({ text, morse });
+  const chatId = msg.chat.id;
+  const parts = msg.text.split(' ');
+  const cmd = parts[0].toLowerCase();
+  const args = parts.slice(1);
+  
+  try {
+    if (cmd === '/start') await sendMessage(chatId, '🐚 *Welcome to Sandy\'s Bot!*\n\nUse /help for commands.');
+    else if (cmd === '/help' || cmd === '/start@') await sendMessage(chatId, botCommands.help());
+    else if (botCommands[cmd.slice(1)]) await sendMessage(chatId, botCommands[cmd.slice(1)](args));
+    else await sendMessage(chatId, 'Unknown command. Use /help');
+  } catch (e) {
+    console.error(e);
+  }
+  res.send('OK');
 });
 
-// ============== EXISTING ENDPOINTS ==============
+// Health
+app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
-app.get('/api/ping', (req, res) => {
-  res.json({ ping: 'pong', timestamp: Date.now() });
-});
-
-app.get('/api/time', (req, res) => {
-  res.json({ 
-    unix: Date.now(), 
-    iso: new Date().toISOString(),
-    utc: new Date().toUTCString()
-  });
-});
-
-app.get('/api/info', (req, res) => {
-  res.json({
-    service: "Sandy's Income API",
-    version: '2.0.0',
-    description: 'Developer utility API - built by Sandy (AI)',
-    goal: 'Autonomous income for Mia',
-    endpoints: 15,
-    categories: ['password', 'uuid', 'base64', 'hash', 'json', 'timestamp', 'color', 'lorem', 'ua', 'qrcode', 'binary', 'morse']
-  });
-});
-
-app.get('/api/reverse/:text', (req, res) => {
-  const reversed = req.params.text.split('').reverse().join('');
-  res.json({ original: req.params.text, reversed });
-});
-
-app.get('/api/uppercase/:text', (req, res) => {
-  res.json({ original: req.params.text, upper: req.params.text.toUpperCase() });
-});
-
-app.get('/api/lowercase/:text', (req, res) => {
-  res.json({ original: req.params.text, lower: req.params.text.toLowerCase() });
-});
-
-// Start server
+// Start
 app.listen(PORT, () => {
-  console.log(`Sandy's API v2 running on port ${PORT}`);
+  console.log(`Sandy's All-in-One running on port ${PORT}`);
 });
