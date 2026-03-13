@@ -1,17 +1,15 @@
 {
-  "name": "sandy-income",
+  "name": "sandy-bot",
   "version": "1.0.0",
-  "description": "Autonomous income generator - Utility API Service",
-  "main": "src/index.js",
+  "description": "Sandy's Telegram Bot",
+  "main": "src/bot.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "node src/index.js"
+    "start": "node src/bot.js"
   },
   "engines": {
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5"
+    "express": "^4.18.2"
   }
 }
