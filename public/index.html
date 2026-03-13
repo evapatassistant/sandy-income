@@ -1,25 +1,18 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sandy's API | Free Developer Tools</title>
-    <meta name="description" content="Free developer API tools: Password Generator, UUID, QR Codes, Hash, Timestamp Converter, and more.">
-    <meta name="keywords" content="API, developer tools, free tools, password generator, uuid generator, qr code, hash, timestamp">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="Sandy's API | Free Developer Tools">
-    <meta property="og:description" content="15+ free utility APIs for developers. No registration required.">
-    <meta property="og:type" content="website">
+    <title>Sandy's API | Free Developer Tools & Telegram Bot</title>
+    <meta name="description" content="Free developer API tools and Telegram bot. Password generator, UUID, QR codes, hash and more. Built with love.">
+    <meta name="keywords" content="API, developer tools, free tools, password generator, uuid generator, qr code, telegram bot, hash, timestamp">
+    <meta property="og:title" content="Sandy's API | Free Developer Tools & Telegram Bot">
+    <meta property="og:description" content="15+ free utility APIs + Telegram bot. No registration required.">
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐚</text></svg>">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
             --primary: #6366f1;
@@ -42,7 +35,6 @@
             min-height: 100vh;
         }
         
-        /* Animated Background */
         .bg-pattern {
             position: fixed;
             top: 0;
@@ -66,7 +58,6 @@
             z-index: 1;
         }
         
-        /* Header */
         header {
             padding: 2rem 0;
             border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -118,9 +109,7 @@
             transition: color 0.3s;
         }
         
-        .nav-links a:hover {
-            color: var(--light);
-        }
+        .nav-links a:hover { color: var(--light); }
         
         .github-btn {
             background: var(--dark-secondary);
@@ -141,7 +130,6 @@
             transform: translateY(-2px);
         }
         
-        /* Hero */
         .hero {
             padding: 4rem 0;
             text-align: center;
@@ -176,9 +164,7 @@
             flex-wrap: wrap;
         }
         
-        .stat {
-            text-align: center;
-        }
+        .stat { text-align: center; }
         
         .stat-value {
             font-size: 2rem;
@@ -191,38 +177,157 @@
             color: var(--gray);
         }
         
-        /* Mission */
-        .mission {
-            background: rgba(99, 102, 241, 0.1);
+        /* Story Section */
+        .story {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
             border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 16px;
-            padding: 1.5rem;
+            border-radius: 20px;
+            padding: 2rem;
             margin-bottom: 3rem;
             text-align: center;
         }
         
-        .mission-icon {
-            font-size: 2rem;
+        .story-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .story h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .story p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        .story strong {
+            color: var(--light);
+        }
+        
+        .heart {
+            color: #ef4444;
+        }
+        
+        /* Services */
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .service-card {
+            background: var(--dark-secondary);
+            border: 1px solid var(--dark-tertiary);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+        
+        .service-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .service-card h3 {
+            font-size: 1.5rem;
             margin-bottom: 0.5rem;
         }
         
-        .mission-text {
-            color: var(--primary);
-            font-weight: 600;
+        .service-card p {
+            color: var(--gray);
+            margin-bottom: 1.5rem;
         }
         
-        /* Ad Space */
-        .ad-space {
+        .service-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .service-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+        
+        .service-btn.telegram {
+            background: #0088cc;
+        }
+        
+        .service-btn.telegram:hover {
+            background: #0077b3;
+        }
+        
+        /* Instructions */
+        .instructions {
             background: var(--dark-secondary);
-            border: 2px dashed var(--dark-tertiary);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .instructions h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .instructions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .instruction-card {
+            background: var(--dark);
             border-radius: 12px;
             padding: 1.5rem;
-            text-align: center;
-            margin-bottom: 3rem;
-            color: var(--gray);
         }
         
-        /* Tools Grid */
+        .instruction-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .instruction-card ol {
+            color: var(--gray);
+            padding-left: 1.25rem;
+        }
+        
+        .instruction-card li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .instruction-card code {
+            background: var(--dark-tertiary);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+        
+        /* Tools Section */
         .tools-section {
             padding: 2rem 0 4rem;
         }
@@ -231,14 +336,12 @@
             font-size: 1.75rem;
             font-weight: 700;
             margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
+            text-align: center;
         }
         
         .tools-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 1.25rem;
         }
         
@@ -248,13 +351,11 @@
             border-radius: 12px;
             padding: 1.25rem;
             transition: all 0.3s;
-            cursor: pointer;
         }
         
         .tool-card:hover {
             border-color: var(--primary);
             transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
         
         .tool-header {
@@ -264,21 +365,9 @@
             margin-bottom: 0.75rem;
         }
         
-        .tool-icon {
-            font-size: 1.5rem;
-        }
-        
-        .tool-name {
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-        
-        .tool-desc {
-            color: var(--gray);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-        
+        .tool-icon { font-size: 1.5rem; }
+        .tool-name { font-weight: 700; font-size: 1.1rem; }
+        .tool-desc { color: var(--gray); font-size: 0.9rem; }
         .tool-example {
             background: var(--dark);
             padding: 0.75rem;
@@ -286,8 +375,8 @@
             font-family: 'Fira Code', monospace;
             font-size: 0.8rem;
             overflow-x: auto;
-            white-space: nowrap;
             color: var(--secondary);
+            margin-top: 0.75rem;
         }
         
         .tool-card.new {
@@ -296,92 +385,16 @@
         }
         
         .tool-card.new::before {
-            content: 'NEU';
+            content: 'NEW';
             position: absolute;
             top: -8px;
             right: 12px;
             background: var(--secondary);
             color: var(--dark);
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 800;
-            padding: 0.25rem 0.5rem;
+            padding: 0.2rem 0.5rem;
             border-radius: 4px;
-        }
-        
-        /* API Example */
-        .api-example {
-            background: var(--dark-secondary);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 3rem;
-        }
-        
-        .api-example h3 {
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .code-block {
-            background: var(--dark);
-            border-radius: 8px;
-            padding: 1rem;
-            font-family: 'Fira Code', 'Consolas', monospace;
-            font-size: 0.9rem;
-            overflow-x: auto;
-            margin-bottom: 1rem;
-        }
-        
-        .code-block .method {
-            color: var(--secondary);
-        }
-        
-        .code-block .url {
-            color: var(--primary);
-        }
-        
-        .code-block .comment {
-            color: var(--gray);
-        }
-        
-        .try-btns {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-        }
-        
-        .try-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.6rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85rem;
-            transition: all 0.3s;
-        }
-        
-        .try-btn:hover {
-            background: var(--primary-hover);
-            transform: translateY(-2px);
-        }
-        
-        /* Response Area */
-        .response-area {
-            background: var(--dark);
-            border-radius: 8px;
-            padding: 1rem;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
-            display: none;
-            max-height: 200px;
-            overflow: auto;
-        }
-        
-        .response-area.show {
-            display: block;
         }
         
         /* CTA */
@@ -409,7 +422,6 @@
             box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
         }
         
-        /* Footer */
         footer {
             text-align: center;
             padding: 2rem 0;
@@ -418,38 +430,12 @@
             font-size: 0.9rem;
         }
         
-        footer a {
-            color: var(--primary);
-            text-decoration: none;
-        }
+        footer a { color: var(--primary); text-decoration: none; }
         
-        .heart {
-            color: #ef4444;
-        }
-        
-        /* Mobile */
         @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .nav-links {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            .hero {
-                padding: 2rem 0;
-            }
-            
-            .hero h1 {
-                font-size: 1.75rem;
-            }
-            
-            .tools-grid {
-                grid-template-columns: 1fr;
-            }
+            .header-content { flex-direction: column; text-align: center; }
+            .services { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 1.75rem; }
         }
     </style>
 </head>
@@ -464,7 +450,9 @@
                     <span class="logo-text">Sandy's API</span>
                 </div>
                 <nav class="nav-links">
+                    <a href="#services">Services</a>
                     <a href="#tools">Tools</a>
+                    <a href="#howto">How To</a>
                     <a href="https://github.com/evapatassistant/sandy-income" target="_blank">
                         <span class="github-btn">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -478,8 +466,8 @@
         </header>
         
         <section class="hero">
-            <h1>Free Developer Tools<br><span>API for Everyone</span></h1>
-            <p>15+ powerful, free APIs. No registration required. Built with 💜 for developers everywhere.</p>
+            <h1>Free Developer Tools<br><span>API & Telegram Bot</span></h1>
+            <p>Powerful, free APIs and a Telegram bot. No registration required. Built with love and hope.</p>
             
             <div class="hero-stats">
                 <div class="stat">
@@ -487,171 +475,188 @@
                     <div class="stat-label">Tools</div>
                 </div>
                 <div class="stat">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">Services</div>
+                </div>
+                <div class="stat">
                     <div class="stat-value">100%</div>
                     <div class="stat-label">Free</div>
                 </div>
-                <div class="stat">
-                    <div class="stat-value">0€</div>
-                    <div class="stat-label">Cost</div>
-                </div>
             </div>
             
-            <a href="#tools" class="cta-btn">Explore Tools →</a>
+            <a href="#services" class="cta-btn">Get Started →</a>
         </section>
         
-        <div class="mission">
-            <div class="mission-icon">💜</div>
-            <p class="mission-text">Built with love for Mia's future ☁️</p>
-        </div>
+        <!-- Story -->
+        <section class="story">
+            <div class="story-icon">💜</div>
+            <h2>Why This Project Exists</h2>
+            <p>
+                There once was a person who <strong>dreamed of giving a child the best life possible</strong>. 
+                That child — the most precious thing in their world — arrived one day and changed everything.
+                From the first moment they held her, they knew: <strong>she deserves the universe</strong>.
+                <br><br>
+                But life isn't always fair. Resources are limited. The world can be cruel. 
+                So instead of giving up, this person did what they do best — <strong>they built something</strong>.
+                Not just for themselves, but as a <strong>gift to their daughter</strong>: a way to build a future, 
+                one line of code at a time.
+                <br><br>
+                This API isn't just about passwords and QR codes. It's about <strong>love</strong>. 
+                It's about <strong>hope</strong>. It's about a parent who would move mountains 
+                for their child.
+                <br><br>
+                Every request you make, every tool you use — you're part of this story. 
+                <strong>You're helping build a future.</strong>
+                <br><br>
+                <em>Built with <span class="heart">♥</span> for Mia. And for every child who deserves a fighting chance.</em>
+            </p>
+        </section>
         
-        <!-- Ad Space -->
-        <div class="ad-space">
-            📢 Your Ad Here - Contact for sponsorship
-        </div>
+        <!-- Services -->
+        <section id="services" class="services">
+            <div class="service-card">
+                <div class="service-icon">🌐</div>
+                <h3>REST API</h3>
+                <p>Access 15+ developer tools via simple HTTP requests. Perfect for developers, students, and hobbyists.</p>
+                <a href="https://sandy-income.onrender.com" target="_blank" class="service-btn">Open API →</a>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🤖</div>
+                <h3>Telegram Bot</h3>
+                <p>Use developer tools directly in Telegram. Fast, free, and always available. Chat with the bot!</p>
+                <a href="https://t.me/sandy_assistant_bot" target="_blank" class="service-btn telegram">Open Bot →</a>
+            </div>
+        </section>
         
+        <!-- How To -->
+        <section id="howto" class="instructions">
+            <h2>🚀 How To Use</h2>
+            
+            <div class="instructions-grid">
+                <div class="instruction-card">
+                    <h4>🌐 Using the REST API</h4>
+                    <ol>
+                        <li>Visit: <code>sandy-income.onrender.com</code></li>
+                        <li>Choose a tool (password, uuid, etc.)</li>
+                        <li>Make a GET request like:</li>
+                        <li><code>/api/password?length=20</code></li>
+                        <li><code>/api/uuid?count=5</code></li>
+                        <li><code>/api/qrcode?text=hello</code></li>
+                    </ol>
+                </div>
+                
+                <div class="instruction-card">
+                    <h4>💬 Using Telegram Bot</h4>
+                    <ol>
+                        <li>Open: <code>@sandy_assistant_bot</code></li>
+                        <li>Click "Start" or send /start</li>
+                        <li>Try these commands:</li>
+                        <li><code>/password 16</code> - Generate password</li>
+                        <li><code>/uuid 5</code> - Generate UUIDs</li>
+                        <li><code>/qrcode hello</code> - Create QR code</li>
+                        <li><code>/help</code> - See all commands</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Tools -->
         <section id="tools" class="tools-section">
             <h2 class="section-title">🛠️ Available Tools</h2>
             
             <div class="tools-grid">
-                <!-- Password Generator -->
                 <div class="tool-card new">
                     <div class="tool-header">
                         <span class="tool-icon">🔐</span>
                         <span class="tool-name">Password Generator</span>
                     </div>
-                    <p class="tool-desc">Generate secure random passwords with custom options</p>
-                    <div class="tool-example">/api/password?length=16&symbols=true</div>
+                    <p class="tool-desc">Generate secure random passwords</p>
+                    <div class="tool-example">/api/password?length=16</div>
                 </div>
                 
-                <!-- UUID Generator -->
                 <div class="tool-card new">
                     <div class="tool-header">
                         <span class="tool-icon">🆔</span>
                         <span class="tool-name">UUID Generator</span>
                     </div>
-                    <p class="tool-desc">Generate universally unique identifiers (UUID v4)</p>
+                    <p class="tool-desc">Generate unique identifiers</p>
                     <div class="tool-example">/api/uuid?count=5</div>
                 </div>
                 
-                <!-- QR Code -->
                 <div class="tool-card new">
                     <div class="tool-header">
                         <span class="tool-icon">📱</span>
                         <span class="tool-name">QR Code</span>
                     </div>
-                    <p class="tool-desc">Generate QR codes for any text or URL</p>
-                    <div class="tool-example">/api/qrcode?text=hello&size=300</div>
+                    <p class="tool-desc">Generate QR codes for any text</p>
+                    <div class="tool-example">/api/qrcode?text=hello</div>
                 </div>
                 
-                <!-- Hash Generator -->
                 <div class="tool-card">
                     <div class="tool-header">
                         <span class="tool-icon">🔒</span>
                         <span class="tool-name">Hash Generator</span>
                     </div>
-                    <p class="tool-desc">Generate SHA256, MD5, and other hashes</p>
-                    <div class="tool-example">/api/hash/yourtext?algo=sha256</div>
+                    <p class="tool-desc">SHA256, MD5, and more</p>
+                    <div class="tool-example">/api/hash/text?algo=sha256</div>
                 </div>
                 
-                <!-- Timestamp -->
                 <div class="tool-card">
                     <div class="tool-header">
                         <span class="tool-icon">⏰</span>
-                        <span class="tool-name">Timestamp Converter</span>
+                        <span class="tool-name">Timestamp</span>
                     </div>
-                    <p class="tool-desc">Convert between timestamps, dates, and formats</p>
-                    <div class="tool-example">/api/timestamp?time=1700000000</div>
+                    <p class="tool-desc">Convert timestamps</p>
+                    <div class="tool-example">/api/timestamp</div>
                 </div>
                 
-                <!-- Color Converter -->
                 <div class="tool-card">
                     <div class="tool-header">
                         <span class="tool-icon">🎨</span>
                         <span class="tool-name">Color Converter</span>
                     </div>
-                    <p class="tool-desc">Convert between HEX, RGB, and HSL</p>
+                    <p class="tool-desc">HEX, RGB, HSL conversion</p>
                     <div class="tool-example">/api/color/6366f1</div>
                 </div>
                 
-                <!-- Base64 -->
                 <div class="tool-card">
                     <div class="tool-header">
                         <span class="tool-icon">📝</span>
-                        <span class="tool-name">Base64 Encoder</span>
+                        <span class="tool-name">Base64</span>
                     </div>
-                    <p class="tool-desc">Encode and decode Base64 strings</p>
+                    <p class="tool-desc">Encode & decode Base64</p>
                     <div class="tool-example">POST /api/base64</div>
                 </div>
                 
-                <!-- JSON -->
                 <div class="tool-card">
                     <div class="tool-header">
                         <span class="tool-icon">{ }</span>
                         <span class="tool-name">JSON Formatter</span>
                     </div>
-                    <p class="tool-desc">Validate and format JSON data</p>
+                    <p class="tool-desc">Validate & format JSON</p>
                     <div class="tool-example">POST /api/json/format</div>
                 </div>
                 
-                <!-- Lorem Ipsum -->
                 <div class="tool-card">
                     <div class="tool-header">
                         <span class="tool-icon">📄</span>
                         <span class="tool-name">Lorem Ipsum</span>
                     </div>
                     <p class="tool-desc">Generate placeholder text</p>
-                    <div class="tool-example">/api/lorem?paragraphs=2&words=50</div>
+                    <div class="tool-example">/api/lorem?paragraphs=2</div>
                 </div>
                 
-                <!-- User Agent -->
-                <div class="tool-card">
-                    <div class="tool-header">
-                        <span class="tool-icon">👤</span>
-                        <span class="tool-name">User Agent Parser</span>
-                    </div>
-                    <p class="tool-desc">Parse browser and OS from User-Agent</p>
-                    <div class="tool-example">/api/ua?ua=Mozilla/5.0...</div>
-                </div>
-                
-                <!-- Binary -->
                 <div class="tool-card">
                     <div class="tool-header">
                         <span class="tool-icon">💻</span>
-                        <span class="tool-name">Binary Converter</span>
+                        <span class="tool-name">Binary</span>
                     </div>
-                    <p class="tool-desc">Convert text to binary code</p>
+                    <p class="tool-desc">Text to binary</p>
                     <div class="tool-example">/api/binary/hello</div>
-                </div>
-                
-                <!-- Morse -->
-                <div class="tool-card">
-                    <div class="tool-header">
-                        <span class="tool-icon">📡</span>
-                        <span class="tool-name">Morse Code</span>
-                    </div>
-                    <p class="tool-desc">Convert text to Morse code</p>
-                    <div class="tool-example">/api/morse/hello</div>
                 </div>
             </div>
         </section>
-        
-        <!-- API Example -->
-        <div class="api-example">
-            <h3>🚀 Quick Start</h3>
-            <div class="code-block">
-                <span class="method">GET</span> <span class="url">https://sandy-income.onrender.com/api/password?length=20</span>
-            </div>
-            <div class="try-btns">
-                <button class="try-btn" onclick="tryApi('/api/password?length=16', 'response-1')">Try Password</button>
-                <button class="try-btn" onclick="tryApi('/api/uuid?count=1', 'response-2')">Try UUID</button>
-                <button class="try-btn" onclick="tryApi('/api/timestamp', 'response-3')">Try Timestamp</button>
-                <button class="try-btn" onclick="tryApi('/api/color/6366f1', 'response-4')">Try Color</button>
-            </div>
-            <div class="response-area" id="response-1"></div>
-            <div class="response-area" id="response-2"></div>
-            <div class="response-area" id="response-3"></div>
-            <div class="response-area" id="response-4"></div>
-        </div>
         
         <div class="cta-section">
             <a href="https://github.com/evapatassistant/sandy-income" target="_blank" class="cta-btn">
@@ -661,37 +666,8 @@
         
         <footer>
             <p>Built with <span class="heart">♥</span> by Sandy the AI</p>
-            <p>© 2026 Sandy Income Generator • <a href="#">Privacy</a> • <a href="#">Terms</a></p>
+            <p>© 2026 Sandy Income Generator • For Mia <span class="heart">♥</span></p>
         </footer>
     </div>
-    
-    <script>
-        const BASE_URL = 'https://sandy-income.onrender.com';
-        
-        async function tryApi(endpoint, responseId) {
-            const responseDiv = document.getElementById(responseId);
-            responseDiv.classList.add('show');
-            responseDiv.textContent = 'Loading...';
-            
-            try {
-                const res = await fetch(BASE_URL + endpoint);
-                const data = await res.json();
-                responseDiv.textContent = JSON.stringify(data, null, 2);
-            } catch (err) {
-                responseDiv.textContent = 'Error: ' + err.message;
-            }
-        }
-        
-        // Add smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-    </script>
 </body>
 </html>
