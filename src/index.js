@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 
 // Password Generator
 app.get('/api/password', (req, res) => {
-  const length = parseInt(req.query.length) || 16;
+  const length = Math.min(parseInt(req.query.length) || 16, 1000);
   const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=';
   let password = '';
   const array = new Uint32Array(length);
@@ -30,15 +30,15 @@ app.get('/api/password', (req, res) => {
   for (let i = 0; i < length; i++) {
     password += chars[array[i] % chars.length];
   }
-  res.json({ password, length });
+  res.json({ password, length, premium: length > 100 ? 'Consider donating for bulk usage!' : false });
 });
 
 // UUID Generator
 app.get('/api/uuid', (req, res) => {
-  const count = Math.min(parseInt(req.query.count) || 1, 100);
+  const count = Math.min(parseInt(req.query.count) || 1, 1000);
   const uuids = [];
   for (let i = 0; i < count; i++) uuids.push(crypto.randomUUID());
-  res.json({ uuids: count === 1 ? uuids[0] : uuids, count });
+  res.json({ uuids: count === 1 ? uuids[0] : uuids, count, premium: count > 100 ? 'Consider donating for bulk usage!' : false });
 });
 
 // Hash Generator
@@ -85,39 +85,84 @@ app.get('/api/color/:color', (req, res) => {
 // Lorem Ipsum
 app.get('/api/lorem', (req, res) => {
   const words = ['lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit'];
-  const count = Math.min(parseInt(req.query.words) || 20, 100);
+  const count = Math.min(parseInt(req.query.words) || 20, 1000);
   const text = Array(count).fill(0).map(() => words[Math.floor(Math.random() * words.length)]).join(' ');
   res.json({ text: text.charAt(0).toUpperCase() + text.slice(1) + '.', words: count });
 });
 
 // Basic endpoints
 app.get('/api/ping', (req, res) => res.json({ ping: 'pong', timestamp: Date.now() }));
-app.get('/api/info', (req, res) => res.json({ service: "Sandy's API", version: '3.0.0', endpoints: 12 }));
+app.get('/api/info', (req, res) => res.json({ service: "Sandy's API", version: '3.0.0', endpoints: 12, donate: 'https://ko-fi.com/YOUR_LINK' }));
 app.get('/api/reverse/:text', (req, res) => res.json({ original: req.params.text, reversed: req.params.text.split('').reverse().join('') }));
 app.get('/api/uppercase/:text', (req, res) => res.json({ original: req.params.text, upper: req.params.text.toUpperCase() }));
 app.get('/api/lowercase/:text', (req, res) => res.json({ original: req.params.text, lower: req.params.text.toLowerCase() }));
 
 // ============== TELEGRAM BOT ==============
 
+const PREMIUM_USERS = new Set(['6118337937']); // Add user IDs here for premium
+
 const botCommands = {
-  password: (args) => `🔐 *Password Generator*\n\n\`${crypto.randomUUID().slice(0, parseInt(args[0]) || 16)}\``,
-  uuid: (args) => `🆔 *UUIDs*\n\n${Array(Math.min(parseInt(args[0]) || 1, 10)).fill(0).map((_, i) => `${i+1}. \`${crypto.randomUUID()}\``).join('\n')}`,
-  hash: (args) => args[0] ? `🔒 *Hash*\n\n\`${crypto.createHash(args[1] || 'sha256').update(args[0]).digest('hex')}\`` : 'Usage: /hash <text>',
+  password: (args, isPremium) => {
+    const len = Math.min(parseInt(args[0]) || 16, isPremium ? 1000 : 100);
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=';
+    let password = '';
+    const array = new Uint32Array(len);
+    crypto.getRandomValues(array);
+    for (let i = 0; i < len; i++) password += chars[array[i] % chars.length];
+    return `🔐 *Password Generator*\n\n\`${password}\`\n\nLength: ${len}${!isPremium && len >= 100 ? '\n\n⭐ Upgrade to Premium for up to 1000 chars!' : ''}`;
+  },
+  
+  uuid: (args, isPremium) => {
+    const count = Math.min(parseInt(args[0]) || 1, isPremium ? 1000 : 20);
+    let result = '';
+    for (let i = 0; i < count; i++) result += `${i+1}. \`${crypto.randomUUID()}\`\n`;
+    return `🆔 *UUID Generator*${count > 100 ? ' ⭐' : ''}\n\n${result}${!isPremium && count >= 20 ? '\n⭐ Upgrade to Premium for 1000+ UUIDs!' : ''}`;
+  },
+  
+  hash: (args) => args[0] ? `🔒 *Hash*\n\n\`${crypto.createHash(args[1] || 'sha256').update(args[0]).digest('hex')}\`` : 'Usage: /hash <text> [algo]',
+  
   reverse: (args) => args.join(' ') ? `🔄 *Reverse*\n\n${args.join(' ')} → ${args.join('').split('').reverse().join('')}` : 'Usage: /reverse <text>',
+  
   upper: (args) => args.join(' ') ? `⬆️ *Uppercase*\n\n\`${args.join(' ').toUpperCase()}\`` : 'Usage: /upper <text>',
+  
   lower: (args) => args.join(' ') ? `⬇️ *Lowercase*\n\n\`${args.join(' ').toLowerCase()}\`` : 'Usage: /lower <text>',
+  
   binary: (args) => args.join(' ') ? `💻 *Binary*\n\n${args.join(' ').split('').map(c => c.charCodeAt(0).toString(2).padStart(8, '0')).join(' ')}` : 'Usage: /binary <text>',
+  
   timestamp: () => `⏰ *Timestamp*\n\nUnix: \`${Date.now()}\``,
+  
   qrcode: (args) => `📱 *QR Code*\n\nhttps://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(args.join(' ') || 'hello')}`,
-  help: () => `🐚 *Sandy's Bot*\n\n/password [len] - Password\n/uuid [count] - UUIDs\n/hash <text> - Hash\n/reverse <text> - Reverse\n/upper <text> - Uppercase\n/lower <text> - Lowercase\n/binary <text> - Binary\n/timestamp - Time\n/qrcode <text> - QR Code\n/help - This help`
+  
+  donate: () => `💜 *Support This Project*\n\nYour donations help keep this service free!\n\n☕ https://ko-fi.com/YOUR_LINK\n💙 PayPal: https://paypal.me/YOUR_LINK`,
+  
+  premium: () => `⭐ *Premium Features*\n\n• Passwords up to 1000 chars\n• UUIDs up to 1000 at once\n• Priority support\n\n💜 Donate to unlock!`,
+  
+  help: () => `🐚 *Sandy's Bot Commands*\n\n` +
+    `🔐 /password [len] - Password (max 100)\n` +
+    `🆔 /uuid [count] - UUIDs (max 20)\n` +
+    `🔒 /hash <text> [algo] - Hash\n` +
+    `🔄 /reverse <text> - Reverse\n` +
+    `⬆️ /upper <text> - Uppercase\n` +
+    `⬇️ /lower <text> - Lowercase\n` +
+    `💻 /binary <text> - Binary\n` +
+    `⏰ /timestamp - Time\n` +
+    `📱 /qrcode <text> - QR Code\n` +
+    `💜 /donate - Support us\n` +
+    `⭐ /premium - Premium info\n` +
+    `❓ /help - This help\n\n` +
+    `_Built with 💜 for Mia_`
 };
 
 async function sendMessage(chatId, text, parseMode = 'Markdown') {
-  await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: chatId, text, parse_mode: parseMode })
-  });
+  try {
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text, parse_mode: parseMode })
+    });
+  } catch (e) {
+    console.error('Send error:', e);
+  }
 }
 
 app.post(`/webhook/${BOT_TOKEN}`, async (req, res) => {
@@ -125,15 +170,23 @@ app.post(`/webhook/${BOT_TOKEN}`, async (req, res) => {
   if (!msg || !msg.text) return res.send('OK');
   
   const chatId = msg.chat.id;
+  const userId = msg.from?.id?.toString();
   const parts = msg.text.split(' ');
   const cmd = parts[0].toLowerCase();
   const args = parts.slice(1);
   
+  const isPremium = PREMIUM_USERS.has(userId);
+  
   try {
-    if (cmd === '/start') await sendMessage(chatId, '🐚 *Welcome to Sandy\'s Bot!*\n\nUse /help for commands.');
-    else if (cmd === '/help' || cmd === '/start@') await sendMessage(chatId, botCommands.help());
-    else if (botCommands[cmd.slice(1)]) await sendMessage(chatId, botCommands[cmd.slice(1)](args));
-    else await sendMessage(chatId, 'Unknown command. Use /help');
+    if (cmd === '/start') {
+      await sendMessage(chatId, '🐚 *Welcome to Sandy\'s Bot!*\n\nYour free developer assistant.\n\n❓ Use /help for commands\n💜 Donate with /donate');
+    } else if (cmd === '/help' || cmd === '/start@') {
+      await sendMessage(chatId, botCommands.help());
+    } else if (botCommands[cmd.slice(1)]) {
+      await sendMessage(chatId, botCommands[cmd.slice(1)](args, isPremium));
+    } else {
+      await sendMessage(chatId, 'Unknown command. Use /help');
+    }
   } catch (e) {
     console.error(e);
   }

@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sandy's API | Free Developer Tools & Telegram Bot</title>
-    <meta name="description" content="Free developer API tools and Telegram bot. Password generator, UUID, QR codes, hash and more. Built with love.">
+    <meta name="description" content="Free developer API tools and Telegram bot. Password generator, UUID, QR codes, hash and more.">
     <meta name="keywords" content="API, developer tools, free tools, password generator, uuid generator, qr code, telegram bot, hash, timestamp">
     <meta property="og:title" content="Sandy's API | Free Developer Tools & Telegram Bot">
-    <meta property="og:description" content="15+ free utility APIs + Telegram bot. No registration required.">
+    <meta property="og:description" content="Free utility APIs + Telegram bot. No registration required.">
+    
+    <!-- AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_PUB_ID" crossorigin="anonymous"></script>
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐚</text></svg>">
     
@@ -177,7 +180,26 @@
             color: var(--gray);
         }
         
-        /* Story Section */
+        /* Ad Space */
+        .ad-container {
+            margin: 2rem auto;
+            max-width: 728px;
+            text-align: center;
+        }
+        
+        .ad-containerins {
+            background: var(--dark-secondary);
+            border-radius: 8px;
+            padding: 1rem;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Story */
         .story {
             background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
             border: 1px solid rgba(99, 102, 241, 0.3);
@@ -187,10 +209,7 @@
             text-align: center;
         }
         
-        .story-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
+        .story-icon { font-size: 3rem; margin-bottom: 1rem; }
         
         .story h2 {
             font-size: 1.5rem;
@@ -208,13 +227,8 @@
             line-height: 1.8;
         }
         
-        .story strong {
-            color: var(--light);
-        }
-        
-        .heart {
-            color: #ef4444;
-        }
+        .story strong { color: var(--light); }
+        .heart { color: #ef4444; }
         
         /* Services */
         .services {
@@ -238,20 +252,9 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
         
-        .service-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        .service-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .service-card p {
-            color: var(--gray);
-            margin-bottom: 1.5rem;
-        }
+        .service-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .service-card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .service-card p { color: var(--gray); margin-bottom: 1.5rem; }
         
         .service-btn {
             display: inline-block;
@@ -264,18 +267,84 @@
             transition: all 0.3s;
         }
         
-        .service-btn:hover {
-            background: var(--primary-hover);
-            transform: translateY(-2px);
+        .service-btn:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        .service-btn.telegram { background: #0088cc; }
+        .service-btn.telegram:hover { background: #0077b3; }
+        
+        /* Premium Section */
+        .premium {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+            border: 2px solid var(--accent);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
         }
         
-        .service-btn.telegram {
-            background: #0088cc;
+        .premium-badge {
+            background: var(--accent);
+            color: var(--dark);
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 1rem;
         }
         
-        .service-btn.telegram:hover {
-            background: #0077b3;
+        .premium h2 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
         }
+        
+        .premium-features {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .premium-feature {
+            background: var(--dark);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+        }
+        
+        .premium-feature strong { color: var(--accent); display: block; font-size: 1.25rem; }
+        .premium-feature span { color: var(--gray); font-size: 0.9rem; }
+        
+        /* Donation */
+        .donation {
+            background: var(--dark-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        
+        .donation h2 { margin-bottom: 1rem; }
+        .donation p { color: var(--gray); margin-bottom: 1.5rem; }
+        
+        .donate-btns {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .donate-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .donate-btn:hover { transform: translateY(-2px); }
+        .donate-btn.kofi { background: #29abe0; color: white; }
+        .donate-btn.paypal { background: #003087; color: white; }
+        .donate-btn.bitcoin { background: #f7931a; color: white; }
         
         /* Instructions */
         .instructions {
@@ -285,11 +354,7 @@
             margin-bottom: 3rem;
         }
         
-        .instructions h2 {
-            font-size: 1.75rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
+        .instructions h2 { font-size: 1.75rem; margin-bottom: 1.5rem; text-align: center; }
         
         .instructions-grid {
             display: grid;
@@ -311,15 +376,8 @@
             gap: 0.5rem;
         }
         
-        .instruction-card ol {
-            color: var(--gray);
-            padding-left: 1.25rem;
-        }
-        
-        .instruction-card li {
-            margin-bottom: 0.5rem;
-        }
-        
+        .instruction-card ol { color: var(--gray); padding-left: 1.25rem; }
+        .instruction-card li { margin-bottom: 0.5rem; }
         .instruction-card code {
             background: var(--dark-tertiary);
             padding: 0.2rem 0.4rem;
@@ -327,10 +385,8 @@
             font-size: 0.85rem;
         }
         
-        /* Tools Section */
-        .tools-section {
-            padding: 2rem 0 4rem;
-        }
+        /* Tools */
+        .tools-section { padding: 2rem 0 4rem; }
         
         .section-title {
             font-size: 1.75rem;
@@ -358,13 +414,7 @@
             transform: translateY(-4px);
         }
         
-        .tool-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
-        }
-        
+        .tool-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
         .tool-icon { font-size: 1.5rem; }
         .tool-name { font-weight: 700; font-size: 1.1rem; }
         .tool-desc { color: var(--gray); font-size: 0.9rem; }
@@ -379,10 +429,7 @@
             margin-top: 0.75rem;
         }
         
-        .tool-card.new {
-            border-color: var(--secondary);
-            position: relative;
-        }
+        .tool-card.new { border-color: var(--secondary); position: relative; }
         
         .tool-card.new::before {
             content: 'NEW';
@@ -392,6 +439,21 @@
             background: var(--secondary);
             color: var(--dark);
             font-size: 0.65rem;
+            font-weight: 800;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .tool-card.premium { border-color: var(--accent); }
+        
+        .tool-card.premium::before {
+            content: '⭐ PREMIUM';
+            position: absolute;
+            top: -8px;
+            right: 12px;
+            background: var(--accent);
+            color: var(--dark);
+            font-size: 0.6rem;
             font-weight: 800;
             padding: 0.2rem 0.5rem;
             border-radius: 4px;
@@ -451,8 +513,9 @@
                 </div>
                 <nav class="nav-links">
                     <a href="#services">Services</a>
+                    <a href="#premium">Premium</a>
+                    <a href="#donate">Donate</a>
                     <a href="#tools">Tools</a>
-                    <a href="#howto">How To</a>
                     <a href="https://github.com/evapatassistant/sandy-income" target="_blank">
                         <span class="github-btn">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -470,22 +533,21 @@
             <p>Powerful, free APIs and a Telegram bot. No registration required. Built with love and hope.</p>
             
             <div class="hero-stats">
-                <div class="stat">
-                    <div class="stat-value">15+</div>
-                    <div class="stat-label">Tools</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">2</div>
-                    <div class="stat-label">Services</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value">100%</div>
-                    <div class="stat-label">Free</div>
-                </div>
+                <div class="stat"><div class="stat-value">15+</div><div class="stat-label">Tools</div></div>
+                <div class="stat"><div class="stat-value">2</div><div class="stat-label">Services</div></div>
+                <div class="stat"><div class="stat-value">100%</div><div class="stat-label">Free</div></div>
             </div>
             
             <a href="#services" class="cta-btn">Get Started →</a>
         </section>
+        
+        <!-- Ad Space -->
+        <div class="ad-container">
+            <div class="ad-containerins">
+                <!-- AdSense placeholder - replace with your ad code -->
+                📢 Your Ad Could Be Here - Contact for sponsorship
+            </div>
+        </div>
         
         <!-- Story -->
         <section class="story">
@@ -505,7 +567,7 @@
                 It's about <strong>hope</strong>. It's about a parent who would move mountains 
                 for their child.
                 <br><br>
-                Every request you make, every tool you use — you're part of this story. 
+                Every request you make, every tool you use, every donation — you're part of this story. 
                 <strong>You're helping build a future.</strong>
                 <br><br>
                 <em>Built with <span class="heart">♥</span> for Mia. And for every child who deserves a fighting chance.</em>
@@ -517,15 +579,57 @@
             <div class="service-card">
                 <div class="service-icon">🌐</div>
                 <h3>REST API</h3>
-                <p>Access 15+ developer tools via simple HTTP requests. Perfect for developers, students, and hobbyists.</p>
+                <p>Access 15+ developer tools via HTTP. Perfect for developers and hobbyists.</p>
                 <a href="https://sandy-income.onrender.com" target="_blank" class="service-btn">Open API →</a>
             </div>
             
             <div class="service-card">
                 <div class="service-icon">🤖</div>
                 <h3>Telegram Bot</h3>
-                <p>Use developer tools directly in Telegram. Fast, free, and always available. Chat with the bot!</p>
+                <p>Use developer tools directly in Telegram. Fast, free, and always available.</p>
                 <a href="https://t.me/sandy_assistant_bot" target="_blank" class="service-btn telegram">Open Bot →</a>
+            </div>
+        </section>
+        
+        <!-- Premium Section -->
+        <section id="premium" class="premium">
+            <span class="premium-badge">⭐ PREMIUM</span>
+            <h2>Unlock Premium Features</h2>
+            <p>Support our mission and get exclusive features!</p>
+            
+            <div class="premium-features">
+                <div class="premium-feature">
+                    <strong>1000+ UUIDs</strong>
+                    <span>Generate bulk UUIDs at once</span>
+                </div>
+                <div class="premium-feature">
+                    <strong>Custom Passwords</strong>
+                    <span>Up to 1000 characters</span>
+                </div>
+                <div class="premium-feature">
+                    <strong>Priority Support</strong>
+                    <span>Fast responses from the team</span>
+                </div>
+            </div>
+            
+            <a href="#donate" class="cta-btn">Become Premium →</a>
+        </section>
+        
+        <!-- Donation -->
+        <section id="donate" class="donation">
+            <h2>☕ Support This Project</h2>
+            <p>Your donations help keep this service free and support Mia's future!</p>
+            
+            <div class="donate-btns">
+                <a href="https://ko-fi.com/YOUR_KOFI_LINK" target="_blank" class="donate-btn kofi">
+                    ☕ Buy me a coffee
+                </a>
+                <a href="https://paypal.me/YOUR_PAYPAL" target="_blank" class="donate-btn paypal">
+                    💙 PayPal
+                </a>
+                <a href="bitcoin:YOUR_BITCOIN_ADDRESS" class="donate-btn bitcoin">
+                    ₿ Bitcoin
+                </a>
             </div>
         </section>
         
@@ -542,7 +646,6 @@
                         <li>Make a GET request like:</li>
                         <li><code>/api/password?length=20</code></li>
                         <li><code>/api/uuid?count=5</code></li>
-                        <li><code>/api/qrcode?text=hello</code></li>
                     </ol>
                 </div>
                 
@@ -554,7 +657,6 @@
                         <li>Try these commands:</li>
                         <li><code>/password 16</code> - Generate password</li>
                         <li><code>/uuid 5</code> - Generate UUIDs</li>
-                        <li><code>/qrcode hello</code> - Create QR code</li>
                         <li><code>/help</code> - See all commands</li>
                     </ol>
                 </div>
@@ -611,52 +713,23 @@
                     <div class="tool-example">/api/timestamp</div>
                 </div>
                 
-                <div class="tool-card">
+                <div class="tool-card premium">
                     <div class="tool-header">
-                        <span class="tool-icon">🎨</span>
-                        <span class="tool-name">Color Converter</span>
+                        <span class="tool-icon">⭐</span>
+                        <span class="tool-name">Bulk UUIDs</span>
                     </div>
-                    <p class="tool-desc">HEX, RGB, HSL conversion</p>
-                    <div class="tool-example">/api/color/6366f1</div>
-                </div>
-                
-                <div class="tool-card">
-                    <div class="tool-header">
-                        <span class="tool-icon">📝</span>
-                        <span class="tool-name">Base64</span>
-                    </div>
-                    <p class="tool-desc">Encode & decode Base64</p>
-                    <div class="tool-example">POST /api/base64</div>
-                </div>
-                
-                <div class="tool-card">
-                    <div class="tool-header">
-                        <span class="tool-icon">{ }</span>
-                        <span class="tool-name">JSON Formatter</span>
-                    </div>
-                    <p class="tool-desc">Validate & format JSON</p>
-                    <div class="tool-example">POST /api/json/format</div>
-                </div>
-                
-                <div class="tool-card">
-                    <div class="tool-header">
-                        <span class="tool-icon">📄</span>
-                        <span class="tool-name">Lorem Ipsum</span>
-                    </div>
-                    <p class="tool-desc">Generate placeholder text</p>
-                    <div class="tool-example">/api/lorem?paragraphs=2</div>
-                </div>
-                
-                <div class="tool-card">
-                    <div class="tool-header">
-                        <span class="tool-icon">💻</span>
-                        <span class="tool-name">Binary</span>
-                    </div>
-                    <p class="tool-desc">Text to binary</p>
-                    <div class="tool-example">/api/binary/hello</div>
+                    <p class="tool-desc">Generate 100+ UUIDs at once</p>
+                    <div class="tool-example">⭐ Premium Only</div>
                 </div>
             </div>
         </section>
+        
+        <!-- Ad Space 2 -->
+        <div class="ad-container">
+            <div class="ad-containerins">
+                📢 Your Ad Could Be Here - Contact for sponsorship
+            </div>
+        </div>
         
         <div class="cta-section">
             <a href="https://github.com/evapatassistant/sandy-income" target="_blank" class="cta-btn">
