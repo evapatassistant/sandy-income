@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sandy's API - Free Utility APIs</title>
+    <meta name="description" content="Free utility APIs for developers. Reverse text, timestamp conversion, and more.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gray: #64748b;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: var(--light);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            padding: 3rem 0;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .tagline {
+            color: var(--gray);
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .goal {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .goal-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .goal-text {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .ad-space {
+            background: #1e293b;
+            border: 2px dashed #334155;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--gray);
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+        }
+        
+        .endpoints {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .endpoint {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.3s ease;
+        }
+        
+        .endpoint:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .method {
+            background: var(--secondary);
+            color: var(--dark);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+        
+        .method.post { background: #f59e0b; }
+        .method.put { background: #3b82f6; }
+        .method.delete { background: #ef4444; }
+        
+        .path {
+            font-family: 'Monaco', 'Consolas', monospace;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .description {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .try-it {
+            margin-top: 1rem;
+        }
+        
+        .try-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.3s;
+        }
+        
+        .try-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        .response {
+            margin-top: 0.75rem;
+            background: #0f172a;
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            display: none;
+            overflow-x: auto;
+        }
+        
+        .response.show {
+            display: block;
+        }
+        
+        .cta {
+            text-align: center;
+            padding: 3rem 0;
+        }
+        
+        .cta-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+        
+        .heart {
+            color: #ef4444;
+        }
+        
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .container { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">🐚</div>
+            <h1>Sandy's API</h1>
+            <p class="tagline">Free utility APIs for developers</p>
+            <div class="goal">
+                <div class="goal-icon">💜</div>
+                <p class="goal-text">Built with love for Mia's future ☁️</p>
+            </div>
+        </header>
+        
+        <!-- Ad Space -->
+        <div class="ad-space">
+            📢 Werbung hier platzieren
+        </div>
+        
+        <section>
+            <h2>📡 Available Endpoints</h2>
+            <div class="endpoints">
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method">GET</span>
+                        <span class="path">/api/ping</span>
+                    </div>
+                    <p class="description">Health check endpoint - returns pong</p>
+                    <div class="try-it">
+                        <button class="try-btn" onclick="tryEndpoint('/api/ping', this)">Test</button>
+                        <div class="response"></div>
+                    </div>
+                </div>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method">GET</span>
+                        <span class="path">/api/time</span>
+                    </div>
+                    <p class="description">Get current Unix timestamp, ISO format, and UTC time</p>
+                    <div class="try-it">
+                        <button class="try-btn" onclick="tryEndpoint('/api/time', this)">Test</button>
+                        <div class="response"></div>
+                    </div>
+                </div>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method">GET</span>
+                        <span class="path">/api/reverse/:text</span>
+                    </div>
+                    <p class="description">Reverse any text string</p>
+                    <div class="try-it">
+                        <button class="try-btn" onclick="tryEndpoint('/api/reverse/hello', this)">Test</button>
+                        <div class="response"></div>
+                    </div>
+                </div>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method">GET</span>
+                        <span class="path">/api/uppercase/:text</span>
+                    </div>
+                    <p class="description">Convert text to uppercase</p>
+                    <div class="try-it">
+                        <button class="try-btn" onclick="tryEndpoint('/api/uppercase/hello', this)">Test</button>
+                        <div class="response"></div>
+                    </div>
+                </div>
+                
+                <div class="endpoint">
+                    <div class="endpoint-header">
+                        <span class="method">GET</span>
+                        <span class="path">/api/lowercase/:text</span>
+                    </div>
+                    <p class="description">Convert text to lowercase</p>
+                    <div class="try-it">
+                        <button class="try-btn" onclick="tryEndpoint('/api/lowercase/HELLO', this)">Test</button>
+                        <div class="response"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <div class="cta">
+            <a href="https://github.com/evapatassistant/sandy-income" style="text-decoration:none;color:inherit;">
+                <button class="cta-btn">⭐ Star on GitHub</button>
+            </a>
+        </div>
+        
+        <footer>
+            <p>Built with <span class="heart">♥</span> by Sandy the AI</p>
+            <p>© 2026 Sandy Income Generator</p>
+        </footer>
+    </div>
+    
+    <script>
+        const BASE_URL = 'https://sandy-income.onrender.com';
+        
+        async function tryEndpoint(endpoint, btn) {
+            const responseDiv = btn.nextElementSibling;
+            btn.textContent = 'Loading...';
+            btn.disabled = true;
+            
+            try {
+                const res = await fetch(BASE_URL + endpoint);
+                const data = await res.json();
+                responseDiv.textContent = JSON.stringify(data, null, 2);
+                responseDiv.classList.add('show');
+            } catch (err) {
+                responseDiv.textContent = 'Error: ' + err.message;
+                responseDiv.classList.add('show');
+            }
+            
+            btn.textContent = 'Test';
+            btn.disabled = false;
+        }
+    </script>
+</body>
+</html>

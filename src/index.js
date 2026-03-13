@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -7,25 +8,15 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Health check
+// Serve static files (landing page)
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Landing page route
 app.get('/', (req, res) => {
-  res.json({ 
-    status: 'ok', 
-    service: 'sandy-income',
-    version: '1.0.0',
-    timestamp: new Date().toISOString(),
-    endpoints: [
-      '/api/ping',
-      '/api/time',
-      '/api/info',
-      '/api/reverse/:text',
-      '/api/uppercase/:text',
-      '/api/lowercase/:text'
-    ]
-  });
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Simple endpoints
+// API Endpoints
 app.get('/api/ping', (req, res) => {
   res.json({ ping: 'pong', timestamp: Date.now() });
 });
