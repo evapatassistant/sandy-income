@@ -44,7 +44,9 @@
     }
     </script>
     
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7746759426676159" crossorigin="anonymous"></script>
+    <!-- AdSense disabled temporarily 
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7746759426676159" crossorigin="anonymous"></script> 
+    -->
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐚</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
@@ -1356,6 +1358,12 @@
     <script>
         let currentCategory = 'all';
         let isDarkMode = true;
+        
+        // Ensure modal is hidden on load
+        document.addEventListener('DOMContentLoaded', function() {
+            var modal = document.getElementById('premiumModal');
+            if (modal) modal.style.display = 'none';
+        });
         
         function showPremiumModal() {
             document.getElementById('premiumModal').classList.add('show');
