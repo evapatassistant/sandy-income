@@ -658,15 +658,76 @@
             overflow-x: auto;
         }
         
-        .premium {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(236, 72, 153, 0.05) 100%);
+        /* Premium Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--dark-card);
             border: 2px solid rgba(245, 158, 11, 0.3);
             border-radius: 20px;
             padding: 2.5rem;
-            margin-bottom: 3rem;
+            max-width: 500px;
+            width: 90%;
             text-align: center;
             position: relative;
-            overflow: hidden;
+            animation: modalPop 0.3s ease;
+        }
+        
+        @keyframes modalPop {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: var(--gray);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .modal-close:hover {
+            color: var(--light);
+        }
+        
+        .modal-content .premium-badge {
+            margin-bottom: 1rem;
+        }
+        
+        .modal-content h2 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .modal-content > p {
+            color: var(--gray-dark);
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-content .premium-features {
+            margin: 1.5rem 0;
+        }
+        
+        .modal-content .premium-feature {
+            margin: 0.75rem 0;
         }
         
         .premium-badge {
@@ -805,7 +866,7 @@
                 <nav class="nav-links">
                     <a href="#services">Services</a>
                     <a href="#tools">Tools</a>
-                    <a href="#premium">Premium</a>
+                    <a href="#" onclick="showPremiumModal(); return false;">Premium</a>
                     <a href="#donate">Donate</a>
                     <a href="https://github.com/evapatassistant/sandy-income" target="_blank">
                         <span class="github-btn">
@@ -879,28 +940,32 @@
             </div>
         </section>
         
-        <section id="premium" class="premium">
-            <span class="premium-badge">⭐ PREMIUM</span>
-            <h2>Unlock Premium Features</h2>
-            <p>Support our mission & get exclusive capabilities!</p>
-            
-            <div class="premium-features">
-                <div class="premium-feature">
-                    <strong>1000+ Passwords</strong>
-                    <span>Generate bulk passwords</span>
+        <!-- Premium Modal -->
+        <div id="premiumModal" class="modal" onclick="closePremiumModal(event)">
+            <div class="modal-content">
+                <span class="modal-close" onclick="closePremiumModal()">&times;</span>
+                <span class="premium-badge">⭐ PREMIUM</span>
+                <h2>Unlock Premium Features</h2>
+                <p>Support our mission & get exclusive capabilities!</p>
+                
+                <div class="premium-features">
+                    <div class="premium-feature">
+                        <strong>1000+ Passwords</strong>
+                        <span>Generate bulk passwords</span>
+                    </div>
+                    <div class="premium-feature">
+                        <strong>1000+ UUIDs</strong>
+                        <span>Generate bulk UUIDs at once</span>
+                    </div>
+                    <div class="premium-feature">
+                        <strong>Priority Support</strong>
+                        <span>Fast responses from the team</span>
+                    </div>
                 </div>
-                <div class="premium-feature">
-                    <strong>1000+ UUIDs</strong>
-                    <span>Generate bulk UUIDs at once</span>
-                </div>
-                <div class="premium-feature">
-                    <strong>Priority Support</strong>
-                    <span>Fast responses from the team</span>
-                </div>
+                
+                <a href="#donate" class="cta-btn primary" onclick="closePremiumModal()">Become Premium →</a>
             </div>
-            
-            <a href="#donate" class="cta-btn primary">Become Premium →</a>
-        </section>
+        </div>
         
         <section id="donate" class="donation">
             <h2>☕ Support This Project</h2>
@@ -1292,10 +1357,21 @@
         let currentCategory = 'all';
         let isDarkMode = true;
         
+        function showPremiumModal() {
+            document.getElementById('premiumModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closePremiumModal(event) {
+            if (!event || event.target === document.getElementById('premiumModal') || event.target.classList.contains('modal-close')) {
+                document.getElementById('premiumModal').classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        }
+        
         function toggleTheme() {
             isDarkMode = !isDarkMode;
             document.querySelector('.theme-toggle').textContent = isDarkMode ? '🌙' : '☀️';
-            // For now just toggle the emoji - full light mode would require more CSS changes
         }
         
         function setCategory(cat) {
