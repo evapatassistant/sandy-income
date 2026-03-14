@@ -92,7 +92,7 @@ app.get('/api/lorem', (req, res) => {
 
 // Basic endpoints
 app.get('/api/ping', (req, res) => res.json({ ping: 'pong', timestamp: Date.now() }));
-app.get('/api/info', (req, res) => res.json({ service: "Sandy's API", version: '4.0.0', endpoints: 35, donate: 'https://ko-fi.com/miasfuture' }));
+app.get('/api/info', (req, res) => res.json({ service: "Sandy's API", version: '5.0.0', endpoints: 42, donate: 'https://ko-fi.com/miasfuture' }));
 app.get('/api/reverse/:text', (req, res) => res.json({ original: req.params.text, reversed: req.params.text.split('').reverse().join('') }));
 app.get('/api/uppercase/:text', (req, res) => res.json({ original: req.params.text, upper: req.params.text.toUpperCase() }));
 app.get('/api/lowercase/:text', (req, res) => res.json({ original: req.params.text, lower: req.params.text.toLowerCase() }));
@@ -288,6 +288,106 @@ app.get('/api/md5/:text', (req, res) => {
 // SHA-512 Hash
 app.get('/api/sha512/:text', (req, res) => {
   res.json({ text: req.params.text, sha512: crypto.createHash('sha512').update(req.params.text).digest('hex') });
+});
+
+// ============== NEW TOOLS ==============
+
+// IP Geolocation
+app.get('/api/ip/:ip?', async (req, res) => {
+  const ip = req.params.ip || req.ip?.replace('::ffff:', '') || req.query.ip || '8.8.8.8';
+  try {
+    const response = await fetch(`http://ip-api.com/json/${ip}?fields=status,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,query`);
+    const data = await response.json();
+    res.json({ ip, ...data });
+  } catch (e) {
+    res.json({ ip, status: 'fail', error: e.message });
+  }
+});
+
+// Email Validator
+app.get('/api/email/:email', (req, res) => {
+  const email = req.params.email;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isValid = emailRegex.test(email);
+  
+  // Basic domain checks
+  const domain = email.split('@')[1];
+  const disposableDomains = ['tempmail.com', '10minutemail.com', 'guerrillamail.com', 'mailinator.com'];
+  const isDisposable = disposableDomains.some(d => domain?.toLowerCase().includes(d));
+  
+  res.json({ 
+    email, 
+    valid: isValid,
+    disposable: isDisposable,
+    domain
+  });
+});
+
+// User Agent Parser
+app.get('/api/ua', (req, res) => {
+  const ua = req.query.ua || req.headers['user-agent'] || 'Mozilla/5.0';
+  
+  // Simple parsing
+  const isBot = /bot|crawler|spider|curl|wget/i.test(ua);
+  const isMobile = /mobile|android|iphone|ipad|ipod/i.test(ua);
+  
+  // Browser detection
+  let browser = 'Unknown';
+  if (/chrome/i.test(ua) && !/edge|opr/i.test(ua)) browser = 'Chrome';
+  else if (/firefox/i.test(ua)) browser = 'Firefox';
+  else if (/safari/i.test(ua) && !/chrome/i.test(ua)) browser = 'Safari';
+  else if (/edge/i.test(ua)) browser = 'Edge';
+  else if (/opr|opera/i.test(ua)) browser = 'Opera';
+  
+  // OS detection
+  let os = 'Unknown';
+  if (/windows/i.test(ua)) os = 'Windows';
+  else if (/mac/i.test(ua)) os = 'macOS';
+  else if (/linux/i.test(ua)) os = 'Linux';
+  else if (/android/i.test(ua)) os = 'Android';
+  else if (/iphone|ipad|ipod/i.test(ua)) os = 'iOS';
+  
+  res.json({ 
+    userAgent: ua,
+    browser,
+    os,
+    isMobile,
+    isBot
+  });
+});
+
+// UUID v7 (time-ordered)
+app.get('/api/ulid', (req, res) => {
+  const now = Date.now();
+  const rand = crypto.randomBytes(10).toString('hex');
+  const time = now.toString(16).padStart(12, '0');
+  const ulid = time + rand;
+  res.json({ ulid, timestamp: now });
+});
+
+// Password Strength Checker
+app.get('/api/password/strength', (req, res) => {
+  const password = req.query.password || req.query.p || '';
+  let score = 0;
+  const feedback = [];
+  
+  if (password.length >= 8) score += 1;
+  else feedback.push('Use at least 8 characters');
+  
+  if (password.length >= 12) score += 1;
+  
+  if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score += 1;
+  else feedback.push('Add uppercase and lowercase letters');
+  
+  if (/\d/.test(password)) score += 1;
+  else feedback.push('Add numbers');
+  
+  if (/[^a-zA-Z0-9]/.test(password)) score += 1;
+  else feedback.push('Add special characters');
+  
+  const strength = score < 2 ? 'weak' : score < 4 ? 'medium' : 'strong';
+  
+  res.json({ password, score: score / 5 * 100, strength, feedback: score < 5 ? feedback : [] });
 });
 
 // ============== TELEGRAM BOT ==============

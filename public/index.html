@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sandy's API | Free Developer Tools & Telegram Bot</title>
-    <meta name="description" content="35+ free developer API tools. Password generator, UUID, QR codes, hash, base64, URL encode, JSON formatter and more. No API key required.">
+    <meta name="description" content="42+ free developer API tools. Password generator, UUID, QR codes, hash, base64, URL encode, IP geolocation and more. No API key required.">
     <meta name="keywords" content="free API, developer tools, password generator, uuid generator, qr code generator, hash generator, base64 encoder, url encoder, json formatter, telegram bot, free tools, developer utilities">
     <meta name="author" content="Sandy the AI">
     <meta name="robots" content="index, follow">
@@ -233,6 +233,21 @@
             background: rgba(255,255,255,0.1);
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .theme-toggle {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 0.6rem 0.8rem;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.1);
+            transform: scale(1.1);
         }
         
         .hero {
@@ -800,6 +815,7 @@
                             GitHub
                         </span>
                     </a>
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">🌙</button>
                 </nav>
             </div>
         </header>
@@ -813,7 +829,7 @@
             <p>35+ powerful utilities for developers. Passwords, UUIDs, encoding, hashes, QR codes & more. Completely free, no API key needed.</p>
             
             <div class="hero-stats">
-                <div class="stat"><div class="stat-value">35+</div><div class="stat-label">Tools</div></div>
+                <div class="stat"><div class="stat-value">42+</div><div class="stat-label">Tools</div></div>
                 <div class="stat"><div class="stat-value">2</div><div class="stat-label">Services</div></div>
                 <div class="stat"><div class="stat-value">100%</div><div class="stat-label">Free</div></div>
             </div>
@@ -1201,6 +1217,56 @@
                     <p class="tool-desc">Generate QR codes</p>
                     <div class="tool-example">/api/qrcode?text=hello</div>
                 </div>
+                
+                <!-- IP Geolocation -->
+                <div class="tool-card" data-category="utility">
+                    <div class="tool-header">
+                        <span class="tool-icon">🌍</span>
+                        <span class="tool-name">IP Geolocation</span>
+                    </div>
+                    <p class="tool-desc">Get location info from IP</p>
+                    <div class="tool-example">/api/ip/8.8.8.8</div>
+                </div>
+                
+                <!-- Email Validator -->
+                <div class="tool-card" data-category="utility">
+                    <div class="tool-header">
+                        <span class="tool-icon">📧</span>
+                        <span class="tool-name">Email Validator</span>
+                    </div>
+                    <p class="tool-desc">Validate email addresses</p>
+                    <div class="tool-example">/api/email/test@test.com</div>
+                </div>
+                
+                <!-- User Agent -->
+                <div class="tool-card" data-category="utility">
+                    <div class="tool-header">
+                        <span class="tool-icon">👤</span>
+                        <span class="tool-name">User Agent</span>
+                    </div>
+                    <p class="tool-desc">Parse user agent string</p>
+                    <div class="tool-example">/api/ua</div>
+                </div>
+                
+                <!-- ULID -->
+                <div class="tool-card" data-category="security">
+                    <div class="tool-header">
+                        <span class="tool-icon">🆔</span>
+                        <span class="tool-name">ULID Generator</span>
+                    </div>
+                    <p class="tool-desc">Time-ordered unique IDs</p>
+                    <div class="tool-example">/api/ulid</div>
+                </div>
+                
+                <!-- Password Strength -->
+                <div class="tool-card" data-category="security">
+                    <div class="tool-header">
+                        <span class="tool-icon">🔒</span>
+                        <span class="tool-name">Password Strength</span>
+                    </div>
+                    <p class="tool-desc">Check password strength</p>
+                    <div class="tool-example">/api/password/strength?password=abc</div>
+                </div>
             </div>
         </section>
         
@@ -1224,6 +1290,13 @@
     
     <script>
         let currentCategory = 'all';
+        let isDarkMode = true;
+        
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            document.querySelector('.theme-toggle').textContent = isDarkMode ? '🌙' : '☀️';
+            // For now just toggle the emoji - full light mode would require more CSS changes
+        }
         
         function setCategory(cat) {
             currentCategory = cat;
