@@ -92,10 +92,203 @@ app.get('/api/lorem', (req, res) => {
 
 // Basic endpoints
 app.get('/api/ping', (req, res) => res.json({ ping: 'pong', timestamp: Date.now() }));
-app.get('/api/info', (req, res) => res.json({ service: "Sandy's API", version: '3.0.0', endpoints: 12, donate: 'https://ko-fi.com/YOUR_LINK' }));
+app.get('/api/info', (req, res) => res.json({ service: "Sandy's API", version: '4.0.0', endpoints: 35, donate: 'https://ko-fi.com/miasfuture' }));
 app.get('/api/reverse/:text', (req, res) => res.json({ original: req.params.text, reversed: req.params.text.split('').reverse().join('') }));
 app.get('/api/uppercase/:text', (req, res) => res.json({ original: req.params.text, upper: req.params.text.toUpperCase() }));
 app.get('/api/lowercase/:text', (req, res) => res.json({ original: req.params.text, lower: req.params.text.toLowerCase() }));
+
+// ============== NEW DEVELOPER TOOLS ==============
+
+// Base64 Encode
+app.get('/api/base64/encode', (req, res) => {
+  const text = req.query.text || req.query.q || '';
+  res.json({ text, encoded: Buffer.from(text).toString('base64') });
+});
+
+// Base64 Decode
+app.get('/api/base64/decode', (req, res) => {
+  const encoded = req.query.text || req.query.q || '';
+  try {
+    const decoded = Buffer.from(encoded, 'base64').toString('utf8');
+    res.json({ encoded, decoded, valid: true });
+  } catch (e) {
+    res.json({ encoded, decoded: null, valid: false, error: 'Invalid base64' });
+  }
+});
+
+// URL Encode
+app.get('/api/url/encode', (req, res) => {
+  const text = req.query.text || req.query.q || '';
+  res.json({ text, encoded: encodeURIComponent(text) });
+});
+
+// URL Decode
+app.get('/api/url/decode', (req, res) => {
+  const encoded = req.query.text || req.query.q || '';
+  try {
+    const decoded = decodeURIComponent(encoded);
+    res.json({ encoded, decoded });
+  } catch (e) {
+    res.json({ encoded, decoded: null, error: 'Invalid URL encoding' });
+  }
+});
+
+// JSON Formatter/Validator
+app.get('/api/json', (req, res) => {
+  const text = req.query.text || req.query.q || '';
+  try {
+    const parsed = JSON.parse(text);
+    res.json({ valid: true, formatted: JSON.stringify(parsed, null, 2), parsed });
+  } catch (e) {
+    res.json({ valid: false, error: e.message, hint: 'Check for missing quotes or commas' });
+  }
+});
+
+// Random Number
+app.get('/api/random', (req, res) => {
+  const min = parseInt(req.query.min) || 0;
+  const max = parseInt(req.query.max) || 100;
+  const count = Math.min(parseInt(req.query.count) || 1, 100);
+  const numbers = [];
+  for (let i = 0; i < count; i++) numbers.push(Math.floor(Math.random() * (max - min + 1)) + min);
+  res.json({ min, max, count, numbers: count === 1 ? numbers[0] : numbers });
+});
+
+// Slugify
+app.get('/api/slug/:text', (req, res) => {
+  const slug = req.params.text.toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+  res.json({ text: req.params.text, slug });
+});
+
+// JWT Decode (no verification)
+app.get('/api/jwt/decode', (req, res) => {
+  const token = req.query.token || req.query.q || '';
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) throw new Error('Invalid JWT format');
+    const payload = JSON.parse(Buffer.from(parts[1], 'base64').toString());
+    res.json({ token, header: JSON.parse(Buffer.from(parts[0], 'base64').toString()), payload, valid: true });
+  } catch (e) {
+    res.json({ token, error: e.message, valid: false });
+  }
+});
+
+// Hex <-> ASCII
+app.get('/api/hex/:text', (req, res) => {
+  const hex = req.params.text;
+  if (/^[0-9a-fA-F]+$/.test(hex)) {
+    const str = hex.match(/.{1,2}/g)?.map(b => String.fromCharCode(parseInt(b, 16))).join('') || '';
+    res.json({ hex, ascii: str, mode: 'hex-to-ascii' });
+  } else {
+    const h = hex.split('').map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+    res.json({ ascii: hex, hex: h, mode: 'ascii-to-hex' });
+  }
+});
+
+// Unix Timestamp Converter
+app.get('/api/time', (req, res) => {
+  const unix = req.query.unix;
+  const iso = req.query.iso;
+  let result = {};
+  
+  if (unix) {
+    const date = new Date(parseInt(unix));
+    result = { unix: parseInt(unix), iso: date.toISOString(), date: date.toUTCString(), readable: date.toLocaleString() };
+  } else if (iso) {
+    const date = new Date(iso);
+    result = { iso, unix: date.getTime(), date: date.toUTCString(), readable: date.toLocaleString() };
+  } else {
+    const now = new Date();
+    result = { now: true, unix: now.getTime(), iso: now.toISOString(), date: now.toUTCString(), readable: now.toLocaleString() };
+  }
+  res.json(result);
+});
+
+// Random Choice from List
+app.get('/api/choice', (req, res) => {
+  const items = (req.query.items || req.query.q || '').split(',').map(s => s.trim()).filter(s => s);
+  if (items.length === 0) return res.json({ error: 'No items provided', usage: '/api/choice?items=a,b,c' });
+  const choice = items[Math.floor(Math.random() * items.length)];
+  res.json({ items, choice, count: items.length });
+});
+
+// Text Statistics
+app.get('/api/stats/:text', (req, res) => {
+  const text = req.params.text;
+  res.json({
+    text,
+    characters: text.length,
+    charactersNoSpaces: text.replace(/\s/g, '').length,
+    words: text.trim().split(/\s+/).filter(w => w).length,
+    lines: text.split('\n').length,
+    sentences: text.split(/[.!?]+/).filter(s => s.trim()).length,
+    paragraphs: text.split(/\n\n+/).filter(p => p.trim()).length,
+    uniqueChars: new Set(text).size
+  });
+});
+
+// Mime Type Lookup
+app.get('/api/mime/:ext', (req, res) => {
+  const mimeTypes = {
+    'html': 'text/html', 'htm': 'text/html', 'css': 'text/css', 'js': 'application/javascript',
+    'json': 'application/json', 'xml': 'application/xml', 'txt': 'text/plain',
+    'png': 'image/png', 'jpg': 'image/jpeg', 'jpeg': 'image/jpeg', 'gif': 'image/gif', 'svg': 'image/svg+xml', 'webp': 'image/webp',
+    'pdf': 'application/pdf', 'zip': 'application/zip', 'tar': 'application/x-tar', 'gz': 'application/gzip',
+    'mp3': 'audio/mpeg', 'wav': 'audio/wav', 'mp4': 'video/mp4', 'webm': 'video/webm',
+    'woff': 'font/woff', 'woff2': 'font/woff2', 'ttf': 'font/ttf', 'eot': 'application/vnd.ms-fontobject',
+    'ico': 'image/x-icon', 'csv': 'text/csv', 'md': 'text/markdown'
+  };
+  const ext = req.params.ext.toLowerCase().replace('.', '');
+  res.json({ ext: req.params.ext, mime: mimeTypes[ext] || 'application/octet-stream', known: !!mimeTypes[ext] });
+});
+
+// Random String (alphanumeric only)
+app.get('/api/randomstring', (req, res) => {
+  const length = Math.min(parseInt(req.query.length) || 16, 1000);
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  const array = new Uint32Array(length);
+  crypto.getRandomValues(array);
+  for (let i = 0; i < length; i++) result += chars[array[i] % chars.length];
+  res.json({ string: result, length });
+});
+
+// Number Base Converter
+app.get('/api/convert', (req, res) => {
+  const value = req.query.value || req.query.q || '0';
+  const from = parseInt(req.query.from) || 10;
+  const to = parseInt(req.query.to) || 2;
+  try {
+    const decimal = parseInt(value, from);
+    if (isNaN(decimal)) throw new Error('Invalid number');
+    res.json({ value, from, to, result: decimal.toString(to), decimal });
+  } catch (e) {
+    res.json({ value, from, to, error: e.message });
+  }
+});
+
+// Roman Numerals
+app.get('/api/roman/:num', (req, res) => {
+  const num = parseInt(req.params.num);
+  if (isNaN(num) || num < 1 || num > 3999) return res.json({ error: 'Number must be between 1 and 3999' });
+  const roman = (n) => {
+    const vals = [[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];
+    return vals.reduce((s, [v, r]) => s + r.repeat(Math.floor(n / v)), '');
+  };
+  res.json({ number: num, roman: roman(num) });
+});
+
+// MD5 Hash (simple)
+app.get('/api/md5/:text', (req, res) => {
+  res.json({ text: req.params.text, md5: crypto.createHash('md5').update(req.params.text).digest('hex') });
+});
+
+// SHA-512 Hash
+app.get('/api/sha512/:text', (req, res) => {
+  res.json({ text: req.params.text, sha512: crypto.createHash('sha512').update(req.params.text).digest('hex') });
+});
 
 // ============== TELEGRAM BOT ==============
 
@@ -133,7 +326,7 @@ const botCommands = {
   
   qrcode: (args) => `📱 *QR Code*\n\nhttps://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(args.join(' ') || 'hello')}`,
   
-  donate: () => `💜 *Support This Project*\n\nYour donations help keep this service free!\n\n☕ https://ko-fi.com/YOUR_LINK\n💙 PayPal: https://paypal.me/YOUR_LINK`,
+  donate: () => `💜 *Support This Project*\n\nYour donations help keep this service free!\n\n☕ https://ko-fi.com/miasfuture\n💙 PayPal: https://paypal.me/patrickstueve`,
   
   premium: () => `⭐ *Premium Features*\n\n• Passwords up to 1000 chars\n• UUIDs up to 1000 at once\n• Priority support\n\n💜 Donate to unlock!`,
   
