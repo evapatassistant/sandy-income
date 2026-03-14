@@ -9,10 +9,10 @@
     <meta property="og:title" content="Sandy's API | Free Developer Tools & Telegram Bot">
     <meta property="og:description" content="Free utility APIs + Telegram bot. No registration required.">
     
-    <!-- AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7746759426676159" crossorigin="anonymous"></script>
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐚</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,12 +22,14 @@
             --primary-hover: #4f46e5;
             --secondary: #10b981;
             --accent: #f59e0b;
-            --dark: #0f172a;
-            --dark-secondary: #1e293b;
-            --dark-tertiary: #334155;
+            --accent2: #ec4899;
+            --dark: #0a0a0f;
+            --dark-secondary: #12121a;
+            --dark-tertiary: #1a1a25;
+            --dark-card: #15151f;
             --light: #f8fafc;
             --gray: #94a3b8;
-            --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+            --gray-dark: #64748b;
         }
         
         body {
@@ -36,9 +38,10 @@
             color: var(--light);
             line-height: 1.6;
             min-height: 100vh;
+            overflow-x: hidden;
         }
         
-        .bg-pattern {
+        .bg-animated {
             position: fixed;
             top: 0;
             left: 0;
@@ -46,15 +49,68 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.4;
+            overflow: hidden;
+        }
+        
+        .bg-animated::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
             background: 
-                radial-gradient(circle at 20% 50%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 40% 80%, rgba(16, 185, 129, 0.1) 0%, transparent 40%);
+                radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(236, 72, 153, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 60% 10%, rgba(16, 185, 129, 0.1) 0%, transparent 40%),
+                radial-gradient(ellipse at 10% 60%, rgba(245, 158, 11, 0.08) 0%, transparent 40%);
+            animation: bgMove 20s ease-in-out infinite;
+        }
+        
+        @keyframes bgMove {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(2%, 2%) rotate(1deg); }
+            50% { transform: translate(0, 4%) rotate(0deg); }
+            75% { transform: translate(-2%, 2%) rotate(-1deg); }
+        }
+        
+        .bg-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .bg-glow-1 {
+            top: -200px;
+            left: -200px;
+            background: var(--primary);
+            animation: floatGlow1 15s ease-in-out infinite;
+        }
+        
+        .bg-glow-2 {
+            bottom: -200px;
+            right: -200px;
+            background: var(--accent2);
+            animation: floatGlow2 18s ease-in-out infinite;
+        }
+        
+        @keyframes floatGlow1 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(100px, 100px); }
+        }
+        
+        @keyframes floatGlow2 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-100px, -100px); }
         }
         
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 1.5rem;
             position: relative;
@@ -62,8 +118,13 @@
         }
         
         header {
-            padding: 2rem 0;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.8);
         }
         
         .header-content {
@@ -87,13 +148,13 @@
         
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-8px); }
         }
         
         .logo-text {
-            font-size: 1.75rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            background: var(--gradient);
+            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -109,44 +170,77 @@
             color: var(--gray);
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s;
+            transition: all 0.3s;
+            font-size: 0.95rem;
         }
         
-        .nav-links a:hover { color: var(--light); }
+        .nav-links a:hover { 
+            color: var(--light); 
+            text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+        }
         
         .github-btn {
-            background: var(--dark-secondary);
-            border: 1px solid var(--dark-tertiary);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
             color: var(--light);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             transition: all 0.3s;
+            font-size: 0.9rem;
         }
         
         .github-btn:hover {
-            background: var(--dark-tertiary);
+            background: rgba(255,255,255,0.1);
             transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
         
         .hero {
-            padding: 4rem 0;
+            padding: 5rem 0 3rem;
             text-align: center;
         }
         
-        .hero h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 800;
-            margin-bottom: 1rem;
-            line-height: 1.2;
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: #a5b4fc;
+            margin-bottom: 1.5rem;
         }
         
-        .hero h1 span {
-            background: var(--gradient);
+        .hero-badge span {
+            width: 8px;
+            height: 8px;
+            background: var(--secondary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1.25rem;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+        
+        .hero h1 .gradient {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 30%, #ec4899 60%, #f59e0b 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -162,49 +256,217 @@
         .hero-stats {
             display: flex;
             justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
+            gap: 3rem;
+            margin-bottom: 2.5rem;
             flex-wrap: wrap;
         }
         
         .stat { text-align: center; }
         
         .stat-value {
-            font-size: 2rem;
+            font-size: 2.25rem;
             font-weight: 800;
-            color: var(--secondary);
+            background: linear-gradient(135deg, #10b981, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .stat-label {
-            font-size: 0.875rem;
-            color: var(--gray);
+            font-size: 0.9rem;
+            color: var(--gray-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
         
-        /* Ad Space */
-        .ad-container {
-            margin: 2rem auto;
-            max-width: 728px;
-            text-align: center;
+        .cta-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
         
-        .ad-containerins {
-            background: var(--dark-secondary);
-            border-radius: 8px;
-            padding: 1rem;
-            min-height: 90px;
+        .cta-btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .cta-btn.primary {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.3);
+        }
+        
+        .cta-btn.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.4);
+        }
+        
+        .cta-btn.secondary {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--light);
+        }
+        
+        .cta-btn.secondary:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-3px);
+        }
+        
+        .demo-section {
+            background: var(--dark-card);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0 3rem;
+        }
+        
+        .demo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .demo-header h3 {
+            font-size: 1.25rem;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .demo-header h3 span {
+            color: var(--secondary);
+        }
+        
+        .demo-controls {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        
+        .demo-input {
+            background: var(--dark-tertiary);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: var(--light);
+            font-size: 1rem;
+            width: 120px;
+            transition: all 0.3s;
+        }
+        
+        .demo-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        
+        .demo-btn {
+            background: var(--primary);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .demo-btn:hover {
+            background: var(--primary-hover);
+            transform: scale(1.05);
+        }
+        
+        .demo-output {
+            background: var(--dark);
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 1.1rem;
+            color: var(--secondary);
+            word-break: break-all;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .categories {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .category-tab {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px;
+            padding: 0.6rem 1.25rem;
             color: var(--gray);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
             font-size: 0.9rem;
         }
         
-        /* Story */
+        .category-tab:hover {
+            background: rgba(255,255,255,0.06);
+            color: var(--light);
+        }
+        
+        .category-tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        .search-container {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .search-input {
+            width: 100%;
+            background: var(--dark-card);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 1rem 1.5rem 1rem 3rem;
+            color: var(--light);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-dark);
+        }
+        
         .story {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(236, 72, 153, 0.05) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.15);
             border-radius: 20px;
-            padding: 2rem;
+            padding: 2.5rem;
             margin-bottom: 3rem;
             text-align: center;
         }
@@ -214,10 +476,9 @@
         .story h2 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
-            background: var(--gradient);
+            background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
         
         .story p {
@@ -230,62 +491,139 @@
         .story strong { color: var(--light); }
         .heart { color: #ef4444; }
         
-        /* Services */
         .services {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
             margin-bottom: 3rem;
         }
         
         .service-card {
-            background: var(--dark-secondary);
-            border: 1px solid var(--dark-tertiary);
+            background: var(--dark-card);
+            border: 1px solid rgba(255,255,255,0.06);
             border-radius: 16px;
             padding: 2rem;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent2));
+            opacity: 0;
+            transition: opacity 0.3s;
         }
         
         .service-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        }
+        
+        .service-card:hover::before {
+            opacity: 1;
         }
         
         .service-icon { font-size: 3rem; margin-bottom: 1rem; }
-        .service-card h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
-        .service-card p { color: var(--gray); margin-bottom: 1.5rem; }
+        .service-card h3 { font-size: 1.35rem; margin-bottom: 0.75rem; }
+        .service-card p { color: var(--gray-dark); margin-bottom: 1.5rem; }
         
         .service-btn {
             display: inline-block;
-            background: var(--primary);
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
             color: white;
             padding: 0.75rem 1.5rem;
-            border-radius: 8px;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s;
         }
         
-        .service-btn:hover { background: var(--primary-hover); transform: translateY(-2px); }
-        .service-btn.telegram { background: #0088cc; }
-        .service-btn.telegram:hover { background: #0077b3; }
+        .service-btn:hover { 
+            transform: scale(1.05); 
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
         
-        /* Premium Section */
+        .service-btn.telegram { background: linear-gradient(135deg, #0088cc 0%, #0099dd 100%); }
+        .service-btn.telegram:hover { box-shadow: 0 10px 30px rgba(0, 136, 204, 0.3); }
+        
+        .tools-section { padding: 2rem 0 4rem; }
+        
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .section-title span {
+            color: var(--primary);
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        
+        .tool-card {
+            background: var(--dark-card);
+            border: 1px solid rgba(255,255,255,0.04);
+            border-radius: 14px;
+            padding: 1.25rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+        
+        .tool-card:hover {
+            border-color: rgba(99, 102, 241, 0.25);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+        
+        .tool-card.hidden {
+            display: none;
+        }
+        
+        .tool-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; }
+        .tool-icon { font-size: 1.5rem; }
+        .tool-name { font-weight: 700; font-size: 1rem; }
+        .tool-desc { color: var(--gray-dark); font-size: 0.85rem; margin-bottom: 0.75rem; }
+        
+        .tool-example {
+            background: var(--dark-tertiary);
+            padding: 0.6rem 0.75rem;
+            border-radius: 8px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            color: var(--secondary);
+            overflow-x: auto;
+        }
+        
         .premium {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
-            border: 2px solid var(--accent);
-            border-radius: 16px;
-            padding: 2rem;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(236, 72, 153, 0.05) 100%);
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            border-radius: 20px;
+            padding: 2.5rem;
             margin-bottom: 3rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
         
         .premium-badge {
             background: var(--accent);
             color: var(--dark);
-            padding: 0.3rem 1rem;
-            border-radius: 20px;
+            padding: 0.4rem 1.25rem;
+            border-radius: 50px;
             font-size: 0.8rem;
             font-weight: 800;
             display: inline-block;
@@ -301,30 +639,36 @@
             display: flex;
             justify-content: center;
             gap: 2rem;
-            margin: 1.5rem 0;
+            margin: 2rem 0;
             flex-wrap: wrap;
         }
         
         .premium-feature {
-            background: var(--dark);
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
+            background: var(--dark-card);
+            padding: 1.25rem 1.75rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.06);
         }
         
-        .premium-feature strong { color: var(--accent); display: block; font-size: 1.25rem; }
-        .premium-feature span { color: var(--gray); font-size: 0.9rem; }
+        .premium-feature strong { 
+            color: var(--accent); 
+            display: block; 
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
         
-        /* Donation */
+        .premium-feature span { color: var(--gray-dark); font-size: 0.9rem; }
+        
         .donation {
-            background: var(--dark-secondary);
-            border-radius: 16px;
-            padding: 2rem;
+            background: var(--dark-card);
+            border-radius: 20px;
+            padding: 2.5rem;
             margin-bottom: 3rem;
             text-align: center;
         }
         
-        .donation h2 { margin-bottom: 1rem; }
-        .donation p { color: var(--gray); margin-bottom: 1.5rem; }
+        .donation h2 { margin-bottom: 1rem; font-size: 1.75rem; }
+        .donation p { color: var(--gray-dark); margin-bottom: 1.5rem; font-size: 1.1rem; }
         
         .donate-btns {
             display: flex;
@@ -334,161 +678,48 @@
         }
         
         .donate-btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .donate-btn:hover { transform: translateY(-2px); }
-        .donate-btn.kofi { background: #29abe0; color: white; }
-        .donate-btn.paypal { background: #003087; color: white; }
-        .donate-btn.bitcoin { background: #f7931a; color: white; }
-        
-        /* Instructions */
-        .instructions {
-            background: var(--dark-secondary);
-            border-radius: 16px;
-            padding: 2rem;
-            margin-bottom: 3rem;
-        }
-        
-        .instructions h2 { font-size: 1.75rem; margin-bottom: 1.5rem; text-align: center; }
-        
-        .instructions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-        
-        .instruction-card {
-            background: var(--dark);
+            padding: 0.85rem 1.75rem;
             border-radius: 12px;
-            padding: 1.5rem;
-        }
-        
-        .instruction-card h4 {
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-            display: flex;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+            display: inline-flex;
             align-items: center;
             gap: 0.5rem;
         }
         
-        .instruction-card ol { color: var(--gray); padding-left: 1.25rem; }
-        .instruction-card li { margin-bottom: 0.5rem; }
-        .instruction-card code {
-            background: var(--dark-tertiary);
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-size: 0.85rem;
-        }
+        .donate-btn:hover { transform: translateY(-3px); }
+        .donate-btn.kofi { background: #29abe0; color: white; }
+        .donate-btn.kofi:hover { box-shadow: 0 15px 40px rgba(41, 171, 224, 0.3); }
+        .donate-btn.paypal { background: #003087; color: white; }
+        .donate-btn.paypal:hover { box-shadow: 0 15px 40px rgba(0, 48, 135, 0.3); }
+        .donate-btn.bitcoin { background: #f7931a; color: white; }
+        .donate-btn.bitcoin:hover { box-shadow: 0 15px 40px rgba(247, 147, 26, 0.3); }
         
-        /* Tools */
-        .tools-section { padding: 2rem 0 4rem; }
-        
-        .section-title {
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
+        .ad-container {
+            margin: 2rem auto;
+            max-width: 728px;
             text-align: center;
         }
         
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.25rem;
-        }
-        
-        .tool-card {
+        .ad-containerins {
             background: var(--dark-secondary);
-            border: 1px solid var(--dark-tertiary);
             border-radius: 12px;
-            padding: 1.25rem;
-            transition: all 0.3s;
-        }
-        
-        .tool-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-4px);
-        }
-        
-        .tool-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
-        .tool-icon { font-size: 1.5rem; }
-        .tool-name { font-weight: 700; font-size: 1.1rem; }
-        .tool-desc { color: var(--gray); font-size: 0.9rem; }
-        .tool-example {
-            background: var(--dark);
-            padding: 0.75rem;
-            border-radius: 8px;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.8rem;
-            overflow-x: auto;
-            color: var(--secondary);
-            margin-top: 0.75rem;
-        }
-        
-        .tool-card.new { border-color: var(--secondary); position: relative; }
-        
-        .tool-card.new::before {
-            content: 'NEW';
-            position: absolute;
-            top: -8px;
-            right: 12px;
-            background: var(--secondary);
-            color: var(--dark);
-            font-size: 0.65rem;
-            font-weight: 800;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-        }
-        
-        .tool-card.premium { border-color: var(--accent); }
-        
-        .tool-card.premium::before {
-            content: '⭐ PREMIUM';
-            position: absolute;
-            top: -8px;
-            right: 12px;
-            background: var(--accent);
-            color: var(--dark);
-            font-size: 0.6rem;
-            font-weight: 800;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-        }
-        
-        /* CTA */
-        .cta-section {
-            text-align: center;
-            padding: 3rem 0;
-        }
-        
-        .cta-btn {
-            background: var(--gradient);
-            color: white;
-            border: none;
-            padding: 1rem 2.5rem;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-        
-        .cta-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+            padding: 1.5rem;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-dark);
+            font-size: 0.9rem;
+            border: 1px dashed rgba(255,255,255,0.1);
         }
         
         footer {
             text-align: center;
-            padding: 2rem 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: var(--gray);
+            padding: 2.5rem 0;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            color: var(--gray-dark);
             font-size: 0.9rem;
         }
         
@@ -497,12 +728,22 @@
         @media (max-width: 768px) {
             .header-content { flex-direction: column; text-align: center; }
             .services { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 1.75rem; }
+            .hero h1 { font-size: 2rem; }
+            .hero-stats { gap: 1.5rem; }
+        }
+        
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem;
+            color: var(--gray-dark);
         }
     </style>
 </head>
 <body>
-    <div class="bg-pattern"></div>
+    <div class="bg-animated"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
     
     <div class="container">
         <header>
@@ -513,12 +754,12 @@
                 </div>
                 <nav class="nav-links">
                     <a href="#services">Services</a>
+                    <a href="#tools">Tools</a>
                     <a href="#premium">Premium</a>
                     <a href="#donate">Donate</a>
-                    <a href="#tools">Tools</a>
                     <a href="https://github.com/evapatassistant/sandy-income" target="_blank">
                         <span class="github-btn">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                             </svg>
                             GitHub
@@ -529,8 +770,12 @@
         </header>
         
         <section class="hero">
-            <h1>Free Developer Tools<br><span>API & Telegram Bot</span></h1>
-            <p>Powerful, free APIs and a Telegram bot. No registration required. Built with love and hope.</p>
+            <div class="hero-badge">
+                <span></span>
+                Free & Open Source • No Registration
+            </div>
+            <h1>Free Developer Tools<br><span class="gradient">API & Telegram Bot</span></h1>
+            <p>35+ powerful utilities for developers. Passwords, UUIDs, encoding, hashes, QR codes & more. Completely free, no API key needed.</p>
             
             <div class="hero-stats">
                 <div class="stat"><div class="stat-value">35+</div><div class="stat-label">Tools</div></div>
@@ -538,73 +783,64 @@
                 <div class="stat"><div class="stat-value">100%</div><div class="stat-label">Free</div></div>
             </div>
             
-            <a href="#services" class="cta-btn">Get Started →</a>
+            <div class="cta-group">
+                <a href="#services" class="cta-btn primary">🚀 Get Started</a>
+                <a href="#tools" class="cta-btn secondary">🛠️ Browse Tools</a>
+            </div>
         </section>
         
-        <!-- Ad Space -->
-        <div class="ad-container">
-            <div class="ad-containerins">
-                <!-- AdSense placeholder - replace with your ad code -->
-                📢 Your Ad Could Be Here - Contact for sponsorship
+        <section class="demo-section" id="demo">
+            <div class="demo-header">
+                <h3><span>⚡</span> Live Demo - Password Generator</h3>
+                <div class="demo-controls">
+                    <input type="number" class="demo-input" id="pwdLength" value="16" min="4" max="1000" placeholder="Length">
+                    <button class="demo-btn" onclick="generatePassword()">Generate</button>
+                </div>
             </div>
-        </div>
+            <div class="demo-output" id="pwdOutput">Click generate to create a password...</div>
+        </section>
         
-        <!-- Story -->
         <section class="story">
             <div class="story-icon">💜</div>
             <h2>Why This Project Exists</h2>
             <p>
-                There once was a person who <strong>dreamed of giving a child the best life possible</strong>. 
-                That child — the most precious thing in their world — arrived one day and changed everything.
-                From the first moment they held her, they knew: <strong>she deserves the universe</strong>.
+                This API was born from a simple dream: <strong>giving a child the best start in life</strong>. 
+                Every line of code, every tool, every feature – all built with love for Mia.
                 <br><br>
-                But life isn't always fair. Resources are limited. The world can be cruel. 
-                So instead of giving up, this person did what they do best — <strong>they built something</strong>.
-                Not just for themselves, but as a <strong>gift to their daughter</strong>: a way to build a future, 
-                one line of code at a time.
-                <br><br>
-                This API isn't just about passwords and QR codes. It's about <strong>love</strong>. 
-                It's about <strong>hope</strong>. It's about a parent who would move mountains 
-                for their child.
-                <br><br>
-                Every request you make, every tool you use, every donation — you're part of this story. 
-                <strong>You're helping build a future.</strong>
-                <br><br>
-                <em>Built with <span class="heart">♥</span> for Mia. And for every child who deserves a fighting chance.</em>
+                Using these tools is free. But if you'd like to be part of her story, 
+                your support means everything. <strong>Thank you for helping build a future.</strong>
             </p>
         </section>
         
-        <!-- Services -->
         <section id="services" class="services">
             <div class="service-card">
                 <div class="service-icon">🌐</div>
                 <h3>REST API</h3>
-                <p>Access 15+ developer tools via HTTP. Perfect for developers and hobbyists.</p>
+                <p>Access all 35+ developer tools via simple HTTP requests. Perfect for automation & integration.</p>
                 <a href="https://sandy-income.onrender.com" target="_blank" class="service-btn">Open API →</a>
             </div>
             
             <div class="service-card">
                 <div class="service-icon">🤖</div>
                 <h3>Telegram Bot</h3>
-                <p>Use developer tools directly in Telegram. Fast, free, and always available.</p>
+                <p>Use developer tools directly in Telegram. Fast, free, and always in your pocket.</p>
                 <a href="https://t.me/sandy_assistant_bot" target="_blank" class="service-btn telegram">Open Bot →</a>
             </div>
         </section>
         
-        <!-- Premium Section -->
         <section id="premium" class="premium">
             <span class="premium-badge">⭐ PREMIUM</span>
             <h2>Unlock Premium Features</h2>
-            <p>Support our mission and get exclusive features!</p>
+            <p>Support our mission & get exclusive capabilities!</p>
             
             <div class="premium-features">
                 <div class="premium-feature">
-                    <strong>1000+ UUIDs</strong>
-                    <span>Generate bulk UUIDs at once</span>
+                    <strong>1000+ Passwords</strong>
+                    <span>Generate bulk passwords</span>
                 </div>
                 <div class="premium-feature">
-                    <strong>Custom Passwords</strong>
-                    <span>Up to 1000 characters</span>
+                    <strong>1000+ UUIDs</strong>
+                    <span>Generate bulk UUIDs at once</span>
                 </div>
                 <div class="premium-feature">
                     <strong>Priority Support</strong>
@@ -612,13 +848,12 @@
                 </div>
             </div>
             
-            <a href="#donate" class="cta-btn">Become Premium →</a>
+            <a href="#donate" class="cta-btn primary">Become Premium →</a>
         </section>
         
-        <!-- Donation -->
         <section id="donate" class="donation">
             <h2>☕ Support This Project</h2>
-            <p>Your donations help keep this service free and support Mia's future!</p>
+            <p>Your donations keep this service free & help build Mia's future!</p>
             
             <div class="donate-btns">
                 <a href="https://ko-fi.com/miasfuture" target="_blank" class="donate-btn kofi">
@@ -633,43 +868,27 @@
             </div>
         </section>
         
-        <!-- How To -->
-        <section id="howto" class="instructions">
-            <h2>🚀 How To Use</h2>
-            
-            <div class="instructions-grid">
-                <div class="instruction-card">
-                    <h4>🌐 Using the REST API</h4>
-                    <ol>
-                        <li>Visit: <code>sandy-income.onrender.com</code></li>
-                        <li>Choose a tool (password, uuid, etc.)</li>
-                        <li>Make a GET request like:</li>
-                        <li><code>/api/password?length=20</code></li>
-                        <li><code>/api/uuid?count=5</code></li>
-                    </ol>
-                </div>
-                
-                <div class="instruction-card">
-                    <h4>💬 Using Telegram Bot</h4>
-                    <ol>
-                        <li>Open: <code>@sandy_assistant_bot</code></li>
-                        <li>Click "Start" or send /start</li>
-                        <li>Try these commands:</li>
-                        <li><code>/password 16</code> - Generate password</li>
-                        <li><code>/uuid 5</code> - Generate UUIDs</li>
-                        <li><code>/help</code> - See all commands</li>
-                    </ol>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Tools -->
         <section id="tools" class="tools-section">
-            <h2 class="section-title">🛠️ 35+ Developer Tools</h2>
+            <h2 class="section-title"><span>🛠️</span> All Developer Tools</h2>
             
-            <div class="tools-grid">
-                <!-- Core Tools -->
-                <div class="tool-card">
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" id="searchTools" placeholder="Search tools..." oninput="filterTools()">
+            </div>
+            
+            <div class="categories">
+                <div class="category-tab active" data-category="all" onclick="setCategory('all')">All</div>
+                <div class="category-tab" data-category="security" onclick="setCategory('security')">🔐 Security</div>
+                <div class="category-tab" data-category="encoding" onclick="setCategory('encoding')">📝 Encoding</div>
+                <div class="category-tab" data-category="numbers" onclick="setCategory('numbers')">🔢 Numbers</div>
+                <div class="category-tab" data-category="text" onclick="setCategory('text')">📝 Text</div>
+                <div class="category-tab" data-category="time" onclick="setCategory('time')">⏰ Time</div>
+                <div class="category-tab" data-category="utility" onclick="setCategory('utility')">🔧 Utility</div>
+            </div>
+            
+            <div class="tools-grid" id="toolsGrid">
+                <!-- Tools will                <!-- Password -->
+                <div class="tool-card" data-category="security">
                     <div class="tool-header">
                         <span class="tool-icon">🔐</span>
                         <span class="tool-name">Password Generator</span>
@@ -678,7 +897,8 @@
                     <div class="tool-example">/api/password?length=16</div>
                 </div>
                 
-                <div class="tool-card">
+                <!-- UUID -->
+                <div class="tool-card" data-category="security">
                     <div class="tool-header">
                         <span class="tool-icon">🆔</span>
                         <span class="tool-name">UUID Generator</span>
@@ -687,16 +907,8 @@
                     <div class="tool-example">/api/uuid?count=5</div>
                 </div>
                 
-                <div class="tool-card">
-                    <div class="tool-header">
-                        <span class="tool-icon">📱</span>
-                        <span class="tool-name">QR Code</span>
-                    </div>
-                    <p class="tool-desc">Generate QR codes for any text</p>
-                    <div class="tool-example">/api/qrcode?text=hello</div>
-                </div>
-                
-                <div class="tool-card">
+                <!-- Hash -->
+                <div class="tool-card" data-category="security">
                     <div class="tool-header">
                         <span class="tool-icon">🔒</span>
                         <span class="tool-name">Hash Generator</span>
@@ -705,8 +917,8 @@
                     <div class="tool-example">/api/hash/text?algo=sha256</div>
                 </div>
                 
-                <!-- Encoding -->
-                <div class="tool-card">
+                <!-- Base64 Encode -->
+                <div class="tool-card" data-category="encoding">
                     <div class="tool-header">
                         <span class="tool-icon">📝</span>
                         <span class="tool-name">Base64 Encode</span>
@@ -715,7 +927,8 @@
                     <div class="tool-example">/api/base64/encode?text=hello</div>
                 </div>
                 
-                <div class="tool-card">
+                <!-- Base64 Decode -->
+                <div class="tool-card" data-category="encoding">
                     <div class="tool-header">
                         <span class="tool-icon">📝</span>
                         <span class="tool-name">Base64 Decode</span>
@@ -724,7 +937,8 @@
                     <div class="tool-example">/api/base64/decode?text=aGVsbG8=</div>
                 </div>
                 
-                <div class="tool-card">
+                <!-- URL Encode -->
+                <div class="tool-card" data-category="encoding">
                     <div class="tool-header">
                         <span class="tool-icon">🔗</span>
                         <span class="tool-name">URL Encode</span>
@@ -733,7 +947,8 @@
                     <div class="tool-example">/api/url/encode?text=hello world</div>
                 </div>
                 
-                <div class="tool-card">
+                <!-- URL Decode -->
+                <div class="tool-card" data-category="encoding">
                     <div class="tool-header">
                         <span class="tool-icon">🔗</span>
                         <span class="tool-name">URL Decode</span>
@@ -742,8 +957,8 @@
                     <div class="tool-example">/api/url/decode?text=hello%20world</div>
                 </div>
                 
-                <!-- Data -->
-                <div class="tool-card">
+                <!-- JSON -->
+                <div class="tool-card" data-category="encoding">
                     <div class="tool-header">
                         <span class="tool-icon">📋</span>
                         <span class="tool-name">JSON Formatter</span>
@@ -752,7 +967,8 @@
                     <div class="tool-example">/api/json?text={"a":1}</div>
                 </div>
                 
-                <div class="tool-card">
+                <!-- JWT -->
+                <div class="tool-card" data-category="encoding">
                     <div class="tool-header">
                         <span class="tool-icon">🎫</span>
                         <span class="tool-name">JWT Decode</span>
@@ -761,8 +977,8 @@
                     <div class="tool-example">/api/jwt/decode?token=eyJ...</div>
                 </div>
                 
-                <!-- Numbers -->
-                <div class="tool-card">
+                <!-- Random -->
+                <div class="tool-card" data-category="numbers">
                     <div class="tool-header">
                         <span class="tool-icon">🎲</span>
                         <span class="tool-name">Random Number</span>
@@ -771,7 +987,8 @@
                     <div class="tool-example">/api/random?min=1&max=100</div>
                 </div>
                 
-                <div class="tool-card">
+                <!-- Random String -->
+                <div class="tool-card" data-category="security">
                     <div class="tool-header">
                         <span class="tool-icon">🔤</span>
                         <span class="tool-name">Random String</span>
@@ -780,7 +997,8 @@
                     <div class="tool-example">/api/randomstring?length=16</div>
                 </div>
                 
-                <div class="tool-card">
+                <!-- Base Converter -->
+                <div class="tool-card" data-category="numbers">
                     <div class="tool-header">
                         <span class="tool-icon">🔢</span>
                         <span class="tool-name">Base Converter</span>
@@ -789,7 +1007,8 @@
                     <div class="tool-example">/api/convert?value=FF&from=16&to=10</div>
                 </div>
                 
-                <div class="tool-card">
+                <!-- Roman -->
+                <div class="tool-card" data-category="numbers">
                     <div class="tool-header">
                         <span class="tool-icon">🏛️</span>
                         <span class="tool-name">Roman Numerals</span>
@@ -798,8 +1017,8 @@
                     <div class="tool-example">/api/roman/2024</div>
                 </div>
                 
-                <!-- Text -->
-                <div class="tool-card">
+                <!-- Slug -->
+                <div class="tool-card" data-category="text">
                     <div class="tool-header">
                         <span class="tool-icon">🏷️</span>
                         <span class="tool-name">Slugify</span>
@@ -808,7 +1027,8 @@
                     <div class="tool-example">/api/slug/Hello World</div>
                 </div>
                 
-                <div class="tool-card">
+                <!-- Reverse -->
+                <div class="tool-card" data-category="text">
                     <div class="tool-header">
                         <span class="tool-icon">🔄</span>
                         <span class="tool-name">Reverse Text</span>
@@ -817,7 +1037,8 @@
                     <div class="tool-example">/api/reverse/hello</div>
                 </div>
                 
-                <div class="tool-card">
+                <!-- Uppercase -->
+                <div class="tool-card" data-category="text">
                     <div class="tool-header">
                         <span class="tool-icon">⬆️</span>
                         <span class="tool-name">Uppercase</span>
@@ -826,7 +1047,8 @@
                     <div class="tool-example">/api/uppercase/hello</div>
                 </div>
                 
-                <div class="tool-card">
+                <!-- Lowercase -->
+                <div class="tool-card" data-category="text">
                     <div class="tool-header">
                         <span class="tool-icon">⬇️</span>
                         <span class="tool-name">Lowercase</span>
@@ -835,7 +1057,8 @@
                     <div class="tool-example">/api/lowercase/HELLO</div>
                 </div>
                 
-                <div class="tool-card">
+                <!-- Binary -->
+                <div class="tool-card" data-category="encoding">
                     <div class="tool-header">
                         <span class="tool-icon">💻</span>
                         <span class="tool-name">Binary</span>
@@ -844,7 +1067,8 @@
                     <div class="tool-example">/api/binary/hello</div>
                 </div>
                 
-                <div class="tool-card">
+                <!-- Hex -->
+                <div class="tool-card" data-category="encoding">
                     <div class="tool-header">
                         <span class="tool-icon">🔢</span>
                         <span class="tool-name">Hex Converter</span>
@@ -853,7 +1077,8 @@
                     <div class="tool-example">/api/hex/48656c6c6f</div>
                 </div>
                 
-                <div class="tool-card">
+                <!-- Stats -->
+                <div class="tool-card" data-category="text">
                     <div class="tool-header">
                         <span class="tool-icon">📊</span>
                         <span class="tool-name">Text Statistics</span>
@@ -862,7 +1087,8 @@
                     <div class="tool-example">/api/stats/hello world</div>
                 </div>
                 
-                <div class="tool-card">
+                <!-- Choice -->
+                <div class="tool-card" data-category="utility">
                     <div class="tool-header">
                         <span class="tool-icon">🎯</span>
                         <span class="tool-name">Random Choice</span>
@@ -871,8 +1097,8 @@
                     <div class="tool-example">/api/choice?items=a,b,c</div>
                 </div>
                 
-                <!-- Time -->
-                <div class="tool-card">
+                <!-- Timestamp -->
+                <div class="tool-card" data-category="time">
                     <div class="tool-header">
                         <span class="tool-icon">⏰</span>
                         <span class="tool-name">Timestamp</span>
@@ -881,7 +1107,8 @@
                     <div class="tool-example">/api/timestamp</div>
                 </div>
                 
-                <div class="tool-card">
+                <!-- Time Converter -->
+                <div class="tool-card" data-category="time">
                     <div class="tool-header">
                         <span class="tool-icon">🕐</span>
                         <span class="tool-name">Time Converter</span>
@@ -890,8 +1117,8 @@
                     <div class="tool-example">/api/time?unix=1700000000</div>
                 </div>
                 
-                <!-- Other -->
-                <div class="tool-card">
+                <!-- Mime -->
+                <div class="tool-card" data-category="utility">
                     <div class="tool-header">
                         <span class="tool-icon">📁</span>
                         <span class="tool-name">Mime Type</span>
@@ -900,7 +1127,8 @@
                     <div class="tool-example">/api/mime/json</div>
                 </div>
                 
-                <div class="tool-card">
+                <!-- Lorem -->
+                <div class="tool-card" data-category="utility">
                     <div class="tool-header">
                         <span class="tool-icon">📄</span>
                         <span class="tool-name">Lorem Ipsum</span>
@@ -909,7 +1137,8 @@
                     <div class="tool-example">/api/lorem?words=20</div>
                 </div>
                 
-                <div class="tool-card">
+                <!-- Morse -->
+                <div class="tool-card" data-category="encoding">
                     <div class="tool-header">
                         <span class="tool-icon">🎵</span>
                         <span class="tool-name">Morse Code</span>
@@ -918,7 +1147,8 @@
                     <div class="tool-example">/api/morse/hello</div>
                 </div>
                 
-                <div class="tool-card">
+                <!-- Color -->
+                <div class="tool-card" data-category="utility">
                     <div class="tool-header">
                         <span class="tool-icon">🎨</span>
                         <span class="tool-name">Color Converter</span>
@@ -926,10 +1156,19 @@
                     <p class="tool-desc">Hex to RGB conversion</p>
                     <div class="tool-example">/api/color/ff5733</div>
                 </div>
+                
+                <!-- QR Code -->
+                <div class="tool-card" data-category="utility">
+                    <div class="tool-header">
+                        <span class="tool-icon">📱</span>
+                        <span class="tool-name">QR Code</span>
+                    </div>
+                    <p class="tool-desc">Generate QR codes</p>
+                    <div class="tool-example">/api/qrcode?text=hello</div>
+                </div>
             </div>
         </section>
         
-        <!-- Ad Space 2 -->
         <div class="ad-container">
             <div class="ad-containerins">
                 📢 Your Ad Could Be Here - Contact for sponsorship
@@ -937,7 +1176,7 @@
         </div>
         
         <div class="cta-section">
-            <a href="https://github.com/evapatassistant/sandy-income" target="_blank" class="cta-btn">
+            <a href="https://github.com/evapatassistant/sandy-income" target="_blank" class="cta-btn primary">
                 ⭐ Star on GitHub
             </a>
         </div>
@@ -947,5 +1186,70 @@
             <p>© 2026 Sandy Income Generator • For Mia <span class="heart">♥</span></p>
         </footer>
     </div>
+    
+    <script>
+        let currentCategory = 'all';
+        
+        function setCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`[data-category="${cat}"]`).classList.add('active');
+            filterTools();
+        }
+        
+        function filterTools() {
+            const search = document.getElementById('searchTools').value.toLowerCase();
+            const cards = document.querySelectorAll('.tool-card');
+            
+            cards.forEach(card => {
+                const name = card.querySelector('.tool-name').textContent.toLowerCase();
+                const desc = card.querySelector('.tool-desc').textContent.toLowerCase();
+                const cat = card.dataset.category;
+                
+                const matchesSearch = name.includes(search) || desc.includes(search);
+                const matchesCat = currentCategory === 'all' || cat === currentCategory;
+                
+                if (matchesSearch && matchesCat) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+            
+            // Show "no results" message
+            const visible = document.querySelectorAll('.tool-card:not(.hidden)');
+            let noResults = document.querySelector('.no-results');
+            if (visible.length === 0) {
+                if (!noResults) {
+                    noResults = document.createElement('div');
+                    noResults.className = 'no-results';
+                    noResults.textContent = 'No tools found matching your search.';
+                    document.getElementById('toolsGrid').appendChild(noResults);
+                }
+            } else if (noResults) {
+                noResults.remove();
+            }
+        }
+        
+        async function generatePassword() {
+            const length = document.getElementById('pwdLength').value || 16;
+            const output = document.getElementById('pwdOutput');
+            
+            output.textContent = 'Generating...';
+            
+            try {
+                const res = await fetch(`/api/password?length=${length}`);
+                const data = await res.json();
+                output.textContent = data.password;
+            } catch (e) {
+                output.textContent = 'Error: ' + e.message;
+            }
+        }
+        
+        // Generate password on Enter key
+        document.getElementById('pwdLength').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') generatePassword();
+        });
+    </script>
 </body>
 </html>
