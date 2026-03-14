@@ -314,6 +314,79 @@ const botCommands = {
   
   hash: (args) => args[0] ? `🔒 *Hash*\n\n\`${crypto.createHash(args[1] || 'sha256').update(args[0]).digest('hex')}\`` : 'Usage: /hash <text> [algo]',
   
+  base64: (args) => {
+    if (!args[0]) return 'Usage: /base64 <encode|decode> <text>';
+    const mode = args[0].toLowerCase();
+    const text = args.slice(1).join(' ');
+    if (mode === 'encode') return `📝 *Base64 Encode*\n\n\`${Buffer.from(text).toString('base64')}\``;
+    if (mode === 'decode') {
+      try { return `📝 *Base64 Decode*\n\n\`${Buffer.from(text, 'base64').toString('utf8')}\``; }
+      catch { return '❌ Invalid Base64'; }
+    }
+    return 'Usage: /base64 <encode|decode> <text>';
+  },
+  
+  url: (args) => {
+    if (!args[0]) return 'Usage: /url <encode|decode> <text>';
+    const mode = args[0].toLowerCase();
+    const text = args.slice(1).join(' ');
+    if (mode === 'encode') return `🔗 *URL Encode*\n\n\`${encodeURIComponent(text)}\``;
+    if (mode === 'decode') {
+      try { return `🔗 *URL Decode*\n\n\`${decodeURIComponent(text)}\``; }
+      catch { return '❌ Invalid URL encoding'; }
+    }
+    return 'Usage: /url <encode|decode> <text>';
+  },
+  
+  random: (args) => {
+    const min = parseInt(args[0]) || 0;
+    const max = parseInt(args[1]) || 100;
+    const num = Math.floor(Math.random() * (max - min + 1)) + min;
+    return `🎲 *Random Number*\n\nMin: ${min}\nMax: ${max}\nResult: \`${num}\``;
+  },
+  
+  slug: (args) => {
+    const text = args.join(' ');
+    if (!text) return 'Usage: /slug <text>';
+    const slug = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    return `🏷️ *Slugify*\n\n${text} → \`${slug}\``;
+  },
+  
+  hex: (args) => {
+    const text = args.join(' ');
+    if (!text) return 'Usage: /hex <text>';
+    if (/^[0-9a-fA-F]+$/.test(text)) {
+      const str = text.match(/.{1,2}/g)?.map(b => String.fromCharCode(parseInt(b, 16)).join('') || '';
+      return `🔢 *Hex → ASCII*\n\n\`${str}\``;
+    }
+    const h = text.split('').map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+    return `🔢 *ASCII → Hex*\n\n\`${h}\``;
+  },
+  
+  roman: (args) => {
+    const num = parseInt(args[0]);
+    if (isNaN(num) || num < 1 || num > 3999) return '❌ Number must be between 1 and 3999';
+    const vals = [[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];
+    const roman = vals.reduce((s, [v, r]) => s + r.repeat(Math.floor(num / v)), '');
+    return `🏛️ *Roman Numerals*\n\n${num} → \`${roman}\``;
+  },
+  
+  choice: (args) => {
+    if (args.length < 2) return 'Usage: /choice <a> <b> <c> ...';
+    const choice = args[Math.floor(Math.random() * args.length)];
+    return `🎯 *Random Choice*\n\nOptions: ${args.join(', ')}\nResult: \`${choice}\``;
+  },
+  
+  stats: (args) => {
+    const text = args.join(' ');
+    if (!text) return 'Usage: /stats <text>';
+    return `📊 *Text Statistics*\n\n` +
+      `Characters: ${text.length}\n` +
+      `Words: ${text.trim().split(/\s+/).filter(w => w).length}\n` +
+      `Lines: ${text.split('\n').length}\n` +
+      `Unique Chars: ${new Set(text).size}`;
+  },
+  
   reverse: (args) => args.join(' ') ? `🔄 *Reverse*\n\n${args.join(' ')} → ${args.join('').split('').reverse().join('')}` : 'Usage: /reverse <text>',
   
   upper: (args) => args.join(' ') ? `⬆️ *Uppercase*\n\n\`${args.join(' ').toUpperCase()}\`` : 'Usage: /upper <text>',
@@ -330,15 +403,23 @@ const botCommands = {
   
   premium: () => `⭐ *Premium Features*\n\n• Passwords up to 1000 chars\n• UUIDs up to 1000 at once\n• Priority support\n\n💜 Donate to unlock!`,
   
-  help: () => `🐚 *Sandy's Bot Commands*\n\n` +
-    `🔐 /password [len] - Password (max 100)\n` +
-    `🆔 /uuid [count] - UUIDs (max 20)\n` +
+  help: () => `🐚 *Sandy's Bot (35+ Tools)*\n\n` +
+    `🔐 /password [len] - Password\n` +
+    `🆔 /uuid [count] - UUIDs\n` +
     `🔒 /hash <text> [algo] - Hash\n` +
+    `📝 /base64 <encode|decode> - Base64\n` +
+    `🔗 /url <encode|decode> - URL encode\n` +
+    `🎲 /random <min> <max> - Random #\n` +
+    `🏷️ /slug <text> - URL slug\n` +
+    `🔢 /hex <text> - Hex converter\n` +
+    `🏛️ /roman <number> - Roman numerals\n` +
+    `🎯 /choice <a> <b> <c> - Random pick\n` +
+    `📊 /stats <text> - Text stats\n` +
     `🔄 /reverse <text> - Reverse\n` +
     `⬆️ /upper <text> - Uppercase\n` +
     `⬇️ /lower <text> - Lowercase\n` +
     `💻 /binary <text> - Binary\n` +
-    `⏰ /timestamp - Time\n` +
+    `⏰ /timestamp - Current time\n` +
     `📱 /qrcode <text> - QR Code\n` +
     `💜 /donate - Support us\n` +
     `⭐ /premium - Premium info\n` +

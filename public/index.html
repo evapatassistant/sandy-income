@@ -533,7 +533,7 @@
             <p>Powerful, free APIs and a Telegram bot. No registration required. Built with love and hope.</p>
             
             <div class="hero-stats">
-                <div class="stat"><div class="stat-value">15+</div><div class="stat-label">Tools</div></div>
+                <div class="stat"><div class="stat-value">35+</div><div class="stat-label">Tools</div></div>
                 <div class="stat"><div class="stat-value">2</div><div class="stat-label">Services</div></div>
                 <div class="stat"><div class="stat-value">100%</div><div class="stat-label">Free</div></div>
             </div>
@@ -665,10 +665,11 @@
         
         <!-- Tools -->
         <section id="tools" class="tools-section">
-            <h2 class="section-title">🛠️ Available Tools</h2>
+            <h2 class="section-title">🛠️ 35+ Developer Tools</h2>
             
             <div class="tools-grid">
-                <div class="tool-card new">
+                <!-- Core Tools -->
+                <div class="tool-card">
                     <div class="tool-header">
                         <span class="tool-icon">🔐</span>
                         <span class="tool-name">Password Generator</span>
@@ -677,7 +678,7 @@
                     <div class="tool-example">/api/password?length=16</div>
                 </div>
                 
-                <div class="tool-card new">
+                <div class="tool-card">
                     <div class="tool-header">
                         <span class="tool-icon">🆔</span>
                         <span class="tool-name">UUID Generator</span>
@@ -686,7 +687,7 @@
                     <div class="tool-example">/api/uuid?count=5</div>
                 </div>
                 
-                <div class="tool-card new">
+                <div class="tool-card">
                     <div class="tool-header">
                         <span class="tool-icon">📱</span>
                         <span class="tool-name">QR Code</span>
@@ -700,26 +701,230 @@
                         <span class="tool-icon">🔒</span>
                         <span class="tool-name">Hash Generator</span>
                     </div>
-                    <p class="tool-desc">SHA256, MD5, and more</p>
+                    <p class="tool-desc">SHA256, MD5, SHA512</p>
                     <div class="tool-example">/api/hash/text?algo=sha256</div>
                 </div>
                 
+                <!-- Encoding -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">📝</span>
+                        <span class="tool-name">Base64 Encode</span>
+                    </div>
+                    <p class="tool-desc">Encode text to Base64</p>
+                    <div class="tool-example">/api/base64/encode?text=hello</div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">📝</span>
+                        <span class="tool-name">Base64 Decode</span>
+                    </div>
+                    <p class="tool-desc">Decode Base64 to text</p>
+                    <div class="tool-example">/api/base64/decode?text=aGVsbG8=</div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">🔗</span>
+                        <span class="tool-name">URL Encode</span>
+                    </div>
+                    <p class="tool-desc">URL encode special chars</p>
+                    <div class="tool-example">/api/url/encode?text=hello world</div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">🔗</span>
+                        <span class="tool-name">URL Decode</span>
+                    </div>
+                    <p class="tool-desc">Decode URL encoded text</p>
+                    <div class="tool-example">/api/url/decode?text=hello%20world</div>
+                </div>
+                
+                <!-- Data -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">📋</span>
+                        <span class="tool-name">JSON Formatter</span>
+                    </div>
+                    <p class="tool-desc">Validate & format JSON</p>
+                    <div class="tool-example">/api/json?text={"a":1}</div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">🎫</span>
+                        <span class="tool-name">JWT Decode</span>
+                    </div>
+                    <p class="tool-desc">Decode JWT tokens</p>
+                    <div class="tool-example">/api/jwt/decode?token=eyJ...</div>
+                </div>
+                
+                <!-- Numbers -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">🎲</span>
+                        <span class="tool-name">Random Number</span>
+                    </div>
+                    <p class="tool-desc">Generate random numbers</p>
+                    <div class="tool-example">/api/random?min=1&max=100</div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">🔤</span>
+                        <span class="tool-name">Random String</span>
+                    </div>
+                    <p class="tool-desc">Alphanumeric random string</p>
+                    <div class="tool-example">/api/randomstring?length=16</div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">🔢</span>
+                        <span class="tool-name">Base Converter</span>
+                    </div>
+                    <p class="tool-desc">Convert between number bases</p>
+                    <div class="tool-example">/api/convert?value=FF&from=16&to=10</div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">🏛️</span>
+                        <span class="tool-name">Roman Numerals</span>
+                    </div>
+                    <p class="tool-desc">Convert to Roman numerals</p>
+                    <div class="tool-example">/api/roman/2024</div>
+                </div>
+                
+                <!-- Text -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">🏷️</span>
+                        <span class="tool-name">Slugify</span>
+                    </div>
+                    <p class="tool-desc">Create URL-friendly slugs</p>
+                    <div class="tool-example">/api/slug/Hello World</div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">🔄</span>
+                        <span class="tool-name">Reverse Text</span>
+                    </div>
+                    <p class="tool-desc">Reverse any string</p>
+                    <div class="tool-example">/api/reverse/hello</div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">⬆️</span>
+                        <span class="tool-name">Uppercase</span>
+                    </div>
+                    <p class="tool-desc">Convert to uppercase</p>
+                    <div class="tool-example">/api/uppercase/hello</div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">⬇️</span>
+                        <span class="tool-name">Lowercase</span>
+                    </div>
+                    <p class="tool-desc">Convert to lowercase</p>
+                    <div class="tool-example">/api/lowercase/HELLO</div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">💻</span>
+                        <span class="tool-name">Binary</span>
+                    </div>
+                    <p class="tool-desc">Text to binary conversion</p>
+                    <div class="tool-example">/api/binary/hello</div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">🔢</span>
+                        <span class="tool-name">Hex Converter</span>
+                    </div>
+                    <p class="tool-desc">ASCII ↔ Hex conversion</p>
+                    <div class="tool-example">/api/hex/48656c6c6f</div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">📊</span>
+                        <span class="tool-name">Text Statistics</span>
+                    </div>
+                    <p class="tool-desc">Analyze text (words, chars, etc)</p>
+                    <div class="tool-example">/api/stats/hello world</div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">🎯</span>
+                        <span class="tool-name">Random Choice</span>
+                    </div>
+                    <p class="tool-desc">Pick random item from list</p>
+                    <div class="tool-example">/api/choice?items=a,b,c</div>
+                </div>
+                
+                <!-- Time -->
                 <div class="tool-card">
                     <div class="tool-header">
                         <span class="tool-icon">⏰</span>
                         <span class="tool-name">Timestamp</span>
                     </div>
-                    <p class="tool-desc">Convert timestamps</p>
+                    <p class="tool-desc">Current timestamp</p>
                     <div class="tool-example">/api/timestamp</div>
                 </div>
                 
-                <div class="tool-card premium">
+                <div class="tool-card">
                     <div class="tool-header">
-                        <span class="tool-icon">⭐</span>
-                        <span class="tool-name">Bulk UUIDs</span>
+                        <span class="tool-icon">🕐</span>
+                        <span class="tool-name">Time Converter</span>
                     </div>
-                    <p class="tool-desc">Generate 100+ UUIDs at once</p>
-                    <div class="tool-example">⭐ Premium Only</div>
+                    <p class="tool-desc">Unix ↔ ISO conversion</p>
+                    <div class="tool-example">/api/time?unix=1700000000</div>
+                </div>
+                
+                <!-- Other -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">📁</span>
+                        <span class="tool-name">Mime Type</span>
+                    </div>
+                    <p class="tool-desc">Get MIME type by extension</p>
+                    <div class="tool-example">/api/mime/json</div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">📄</span>
+                        <span class="tool-name">Lorem Ipsum</span>
+                    </div>
+                    <p class="tool-desc">Generate placeholder text</p>
+                    <div class="tool-example">/api/lorem?words=20</div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">🎵</span>
+                        <span class="tool-name">Morse Code</span>
+                    </div>
+                    <p class="tool-desc">Encode to Morse code</p>
+                    <div class="tool-example">/api/morse/hello</div>
+                </div>
+                
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <span class="tool-icon">🎨</span>
+                        <span class="tool-name">Color Converter</span>
+                    </div>
+                    <p class="tool-desc">Hex to RGB conversion</p>
+                    <div class="tool-example">/api/color/ff5733</div>
                 </div>
             </div>
         </section>
