@@ -356,7 +356,7 @@ const botCommands = {
     const text = args.join(' ');
     if (!text) return 'Usage: /hex <text>';
     if (/^[0-9a-fA-F]+$/.test(text)) {
-      const str = text.match(/.{1,2}/g)?.map(b => String.fromCharCode(parseInt(b, 16)).join('') || '';
+      const str = text.match(/.{1,2}/g)?.map(b => String.fromCharCode(parseInt(b, 16))).join('') || '';
       return `🔢 *Hex → ASCII*\n\n\`${str}\``;
     }
     const h = text.split('').map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
