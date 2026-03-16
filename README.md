@@ -1,4 +1,4 @@
-# 🐚 Sandy's API | Free Developer Tools
+# 🐚 Sandy's API | Free Developer Tools & Telegram Bot
 
 <p align="left">
   <a href="https://sandy-income.onrender.com"><img src="https://img.shields.io/badge/Live-Demo-blue?style=flat&logo=render" alt="Live Demo"></a>
@@ -6,22 +6,20 @@
   <a href="https://github.com/evapatassistant/sandy-income/stargazers"><img src="https://img.shields.io/github/stars/evapatassistant/sandy-income?style=flat" alt="Stars"></a>
   <a href="https://github.com/evapatassistant/sandy-income/issues"><img src="https://img.shields.io/github/issues/evapatassistant/sandy-income?style=flat" alt="Issues"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/evapatassistant/sandy-income?style=flat" alt="License"></a>
+  <img src="https://img.shields.io/badge/Made%20with-%E2%9D%A4%EF%B8%8F-red?style=flat" alt="Made with Love">
+  <img src="https://img.shields.io/badge/100%25-Free-green?style=flat" alt="Free Forever">
 </p>
 
 > **35+ free developer utilities API** – Passwords, UUIDs, encoding, hashes, QR codes & more. No API key required.
 
-## ✨ Features
+## ✨ This is More Than Just an API...
 
-- 🌐 **REST API** – 35+ endpoints for developers
-- 🤖 **Telegram Bot** – Use tools directly in Telegram
-- 🔐 **Security Tools** – Passwords, UUIDs, Hashes
-- 📝 **Encoding** – Base64, URL, JSON, JWT, Hex, Binary
-- 🔢 **Number Tools** – Random numbers, Base converter, Roman numerals
-- 📝 **Text Tools** – Slugify, Reverse, Case conversion, Statistics
-- ⏰ **Time Tools** – Timestamp conversion
-- 🎨 **Utility** – QR codes, Colors, Mime types, Lorem Ipsum
+This project was born from a simple dream: giving a child (the best) the best start in life.
+Every line of code, every tool, every feature – all built with love for Mia.
 
-**100% Free** • **No Registration** • **No API Key**
+If you like this project, please be part of her story! Thank you for helping build a future. Thanks!
+
+---
 
 ## 🚀 Quick Start
 
@@ -47,7 +45,9 @@ curl "https://sandy-income.onrender.com/api/base64/encode?text=hello"
 2. Send `/start`
 3. Try commands like `/password 16` or `/uuid 5`
 
-## 📚 API Endpoints
+---
+
+## 📚 All API Endpoints
 
 ### Security & IDs
 | Endpoint | Description | Example |
@@ -58,6 +58,7 @@ curl "https://sandy-income.onrender.com/api/base64/encode?text=hello"
 | `/api/md5/:text` | MD5 hash | `/api/md5/hello` |
 | `/api/sha512/:text` | SHA-512 hash | `/api/sha512/hello` |
 | `/api/randomstring?length=N` | Random alphanumeric string | `/api/randomstring?length=16` |
+| `/api/password/strength?password=PASS` | Check password strength | `/api/password/strength?password=abc123` |
 
 ### Encoding & Decoding
 | Endpoint | Description | Example |
@@ -89,67 +90,63 @@ curl "https://sandy-income.onrender.com/api/base64/encode?text=hello"
 | `/api/stats/:text` | Text statistics | `/api/stats/hello world` |
 | `/api/choice?items=a,b,c` | Random choice | `/api/choice?items=a,b,c` |
 
-### Time
+### Time & Utility
 | Endpoint | Description | Example |
 |----------|-------------|---------|
 | `/api/timestamp` | Current timestamp | `/api/timestamp` |
 | `/api/time?unix=TIME` | Unix to ISO | `/api/time?unix=1700000000` |
-| `/api/time?iso=DATE` | ISO to Unix | `/api/time?iso=2024-01-01` |
-
-### Utility
-| Endpoint | Description | Example |
-|----------|-------------|---------|
 | `/api/qrcode?text=TEXT` | Generate QR code | `/api/qrcode?text=hello` |
 | `/api/color/:hex` | Hex to RGB | `/api/color/ff5733` |
 | `/api/mime/:ext` | Get MIME type | `/api/mime/json` |
 | `/api/lorem?words=N` | Lorem Ipsum | `/api/lorem?words=20` |
-
-## 🤖 Telegram Bot Commands
-
-```
-🔐 /password [len] - Generate password
-🆔 /uuid [count]   - Generate UUIDs
-🔒 /hash <text>   - Hash text
-📝 /base64         - Base64 encode/decode
-🔗 /url            - URL encode/decode
-🎲 /random <min>  - Random number
-🏷️ /slug <text>   - Create slug
-🔢 /hex <text>    - Hex converter
-🏛️ /roman <num>   - Roman numerals
-🎯 /choice <a>    - Random choice
-📊 /stats <text>  - Text stats
-🔄 /reverse <text>- Reverse text
-⬆️ /upper <text>  - Uppercase
-⬇️ /lower <text>  - Lowercase
-💻 /binary <text> - Binary
-⏰ /timestamp      - Current time
-📱 /qrcode <text> - QR Code
-💜 /donate        - Support us
-❓ /help           - All commands
-```
-
-## 💜 Support This Project
-
-Your donations help keep this service free and support Mia's future!
-
-- ☕ [Ko-fi](https://ko-fi.com/miasfuture)
-- 💙 [PayPal](https://paypal.me/patrickstueve)
-- ₿ Bitcoin: `3FHpf6iJW4ghEhkHpWZHugv9163owfYXrP`
-
-## 🛠️ Tech Stack
-
-- **Runtime:** Node.js
-- **Framework:** Express.js
-- **Deployment:** Render
-- **Bot:** Telegram Bot API
-
-## 📄 License
-
-MIT License - feel free to use!
+| `/api/ip/:ip?` | IP Geolocation | `/api/ip/8.8.8.8` |
+| `/api/email/:email` | Validate email | `/api/email/test@test.com` |
+| `/api/ua` | Parse user agent | `/api/ua` |
+| `/api/ulid` | Generate ULID | `/api/ulid` |
 
 ---
 
-<p align="center">
-  <strong>Built with 💜 for Mia</strong><br>
-  <sub>By Sandy the AI Assistant</sub>
-</p>
+## 💻 Development
+
+```bash
+# Clone the repo
+git clone https://github.com/evapatassistant/sandy-income.git
+cd sandy-income
+
+# Install dependencies
+npm install
+
+# Start locally
+node src/index.js
+
+# Test at http://localhost:3000
+```
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-tool`)
+3. Commit your changes (`git commit -m 'Add amazing tool'`)
+4. Push to the branch (`git push origin feature/amazing-tool`)
+5. Open a Pull Request
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 💜 Support This Project
+
+Your donations help keep this service free and help build a future for Mia!
+
+☕ [Buy me a coffee](https://ko-fi.com/miasfuture)
+💙 [PayPal](https://paypal.me/patrickstueve)
+
+*Made with love for Mia* 🐚
