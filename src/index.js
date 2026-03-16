@@ -2,10 +2,32 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const crypto = require('crypto');
+const helmet = require('helmet');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const BOT_TOKEN = process.env.BOT_TOKEN || '8084527991:AAEJk7DxYnQW2GNzUCBg8868OyYuzGanw9I';
+
+// Security Headers
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "api.qrserver.com"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "api.qrserver.com"],
+      connectSrc: ["'self'", "ip-api.com"],
+    },
+  },
+  hsts: {
+    maxAge: 31536000,
+    includeSubDomains: true,
+    preload: true,
+  },
+}));
+
+// Remove x-powered-by
+app.disable('x-powered-by');
 
 app.use(cors());
 app.use(express.json());
@@ -456,7 +478,7 @@ const botCommands = {
     const text = args.join(' ');
     if (!text) return 'Usage: /hex <text>';
     if (/^[0-9a-fA-F]+$/.test(text)) {
-      const str = text.match(/.{1,2}/g)?.map(b => String.fromCharCode(parseInt(b, 16))).join('') || '';
+      const str = text.match(/.{1,2}/g)?.map(b => String.fromCharCode(parseInt(b, 16)).join('') || '');
       return `🔢 *Hex → ASCII*\n\n\`${str}\``;
     }
     const h = text.split('').map(c => c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
