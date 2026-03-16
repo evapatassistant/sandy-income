@@ -1,0 +1,11 @@
+# Sandy-Income Robots.txt
+# https://sandy-income.onrender.com
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://sandy-income.onrender.com/sitemap.xml
+
+# Crawl-delay (optional, be nice to other servers)
+Crawl-delay: 1
